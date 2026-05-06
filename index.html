@@ -1,0 +1,1607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SkillUp Buddy - Personalized Learning & Course Recommendations</title>
+    <link rel="stylesheet" href="../css/theme-colors.css" />
+<link rel="stylesheet" href="../css/theme-components.css" />
+    <link rel="stylesheet" href="css/main.css" />
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <style>
+        html { scroll-behavior: smooth; }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .card:hover { transform: translateY(-2px); transition: all 0.3s ease; }
+
+        .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.line-clamp-4 {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.review-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.review-card:hover {
+    transform: translateY(-4px);
+}
+
+        
+    </style>
+    
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm z-50 border-b border-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2">
+                    <div class="text-2xl">⚡</div>
+                    <span class="text-xl font-semibold text-primary">SkillUp Buddy</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#features" class="text-text-secondary hover:text-primary transition-colors">Features</a>
+                    <a href="#how-it-works" class="text-text-secondary hover:text-primary transition-colors">How it Works</a>
+                    <a href="#testimonials" class="text-text-secondary hover:text-primary transition-colors">Reviews</a>
+                    <a href="#pricing" class="text-text-secondary hover:text-primary transition-colors">Pricing</a>
+                </div>
+                
+                <!-- Auth Buttons (shown when NOT logged in) -->
+                <div id="authButtons" class="flex items-center space-x-4">
+                    <a href="pages/user_login.html" class="text-text-secondary hover:text-primary transition-colors">Sign In</a>
+                    <a href="pages/user_registration.html" class="btn btn-primary">Get Started</a>
+                </div>
+                
+                <!-- User Menu (shown when logged in) -->
+                <div id="userMenu" class="hidden flex items-center space-x-4">
+                    <div class="relative">
+                        <button id="userMenuToggle" class="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-50">
+                            <img id="userAvatar" src="" alt="Avatar" class="w-8 h-8 rounded-full object-cover hidden" />
+                            <span id="userInitials" class="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center text-primary font-semibold text-sm"></span>
+                            <span id="userName" class="hidden sm:block text-text-primary font-medium"></span>
+                            <svg class="w-4 h-4 text-text-tertiary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                        <div id="userDropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-border hidden">
+                            <div class="py-1">
+                                <a href="pages/user_dashboard.html" class="block px-4 py-2 text-sm text-text-primary hover:bg-gray-50">Dashboard</a>
+                                <a href="pages/user_profile_management.html" class="block px-4 py-2 text-sm text-text-primary hover:bg-gray-50">Profile</a>
+                                <a href="pages/course_recommendations_dashboard.html" class="block px-4 py-2 text-sm text-text-primary hover:bg-gray-50">My Courses</a>
+                                <div class="border-t border-border my-1"></div>
+                                <a href="#" id="signOutBtn" class="block px-4 py-2 text-sm text-text-primary hover:bg-gray-50">Sign Out</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative h-screen overflow-hidden flex items-center justify-center bg-gradient-to-br from-primary-50 via-secondary-50 to-accent-50">
+        <div class="relative z-10 max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+            <div class="animate-slide-in">
+                <div class="text-6xl mb-6">🚀</div>
+                <h1 class="text-5xl md:text-6xl font-bold text-text-primary mb-6 leading-tight">
+                    Your Next Level 
+                    <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                        Learning Experience
+                    </span>
+                </h1>
+                <p class="text-xl text-text-secondary mb-8 max-w-2xl mx-auto">
+                    Discover personalized course recommendations, take skill assessments, and accelerate your career growth.
+                </p>
+                <div id="heroCTA" class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <a href="pages/user_registration.html" class="btn btn-primary text-lg px-8 py-4 shadow-lg">
+                        Start Learning Now <span class="ml-2">→</span>
+                    </a>
+                    <a href="pages/interactive_skills_quiz.html" class="btn bg-white text-primary border-2 border-primary hover:bg-primary hover:text-white text-lg px-8 py-4">
+                        Take Skills Quiz
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Bar -->
+    <section class="bg-primary-900 text-white py-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-center space-x-8 text-sm">
+                <div class="flex items-center space-x-2">
+                    <span class="text-accent">✓</span>
+                    <span>10,000+ Happy Learners</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="text-accent">✓</span>
+                    <span>AI-Powered Recommendations</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="text-accent">✓</span>
+                    <span>Trusted by Industry Leaders</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-surface">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-text-primary mb-4">Powerful Features for Your Success</h2>
+                <p class="text-xl text-text-secondary max-w-2xl mx-auto">
+                    Discover how SkillUp Buddy transforms your learning experience
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="card p-8 text-center hover:shadow-lg transition-all">
+                    <div class="text-4xl mb-4">🎯</div>
+                    <h3 class="text-xl font-semibold text-text-primary mb-3">Smart Recommendations</h3>
+                    <p class="text-text-secondary">AI-powered course suggestions tailored to your skills and goals.</p>
+                </div>
+                
+                <div class="card p-8 text-center hover:shadow-lg transition-all">
+                    <div class="text-4xl mb-4">📊</div>
+                    <h3 class="text-xl font-semibold text-text-primary mb-3">Skill Assessment</h3>
+                    <p class="text-text-secondary">Interactive quizzes to identify your strengths and improvement areas.</p>
+                </div>
+                
+                <div class="card p-8 text-center hover:shadow-lg transition-all">
+                    <div class="text-4xl mb-4">🚀</div>
+                    <h3 class="text-xl font-semibold text-text-primary mb-3">Progress Tracking</h3>
+                    <p class="text-text-secondary">Monitor your learning journey with detailed analytics.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="py-20 bg-primary-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-text-primary mb-4">How SkillUp Buddy Works</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-12">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">1</div>
+                    <h3 class="text-xl font-semibold text-text-primary mb-3">Take the Skills Quiz</h3>
+                    <p class="text-text-secondary mb-4">Complete our assessment to identify your skill level.</p>
+                    <div class="text-4xl">📝</div>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-secondary text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">2</div>
+                    <h3 class="text-xl font-semibold text-text-primary mb-3">Get Personalized Recommendations</h3>
+                    <p class="text-text-secondary mb-4">Our AI suggests the most relevant courses for you.</p>
+                    <div class="text-4xl">🎯</div>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-accent text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">3</div>
+                    <h3 class="text-xl font-semibold text-text-primary mb-3">Start Learning & Growing</h3>
+                    <p class="text-text-secondary mb-4">Begin your personalized learning journey.</p>
+                    <div class="text-4xl">🚀</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Proof & Reviews Section -->
+<section id="testimonials" class="py-20 bg-surface">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold text-text-primary mb-4">What Our Learners Say</h2>
+            <p class="text-xl text-text-secondary max-w-2xl mx-auto mb-6">
+                Join thousands of successful learners who transformed their careers with SkillUp Buddy
+            </p>
+            
+            <!-- Stats Bar -->
+            <div class="flex items-center justify-center space-x-8 mb-8">
+                <div class="text-center">
+                    <div class="flex items-center justify-center mb-1">
+                        <span class="text-3xl font-bold text-primary" id="averageRating">5.0</span>
+                        <span class="text-yellow-400 text-2xl ml-2">★</span>
+                    </div>
+                    <div class="text-sm text-text-secondary">Average Rating</div>
+                </div>
+                <div class="h-12 w-px bg-border"></div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-secondary" id="totalReviews">0</div>
+                    <div class="text-sm text-text-secondary">Total Reviews</div>
+                </div>
+                <div class="h-12 w-px bg-border"></div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-accent">10K+</div>
+                    <div class="text-sm text-text-secondary">Happy Learners</div>
+                </div>
+            </div>
+
+            <!-- Write Review Button (Visible when logged in) -->
+            <div id="writeReviewSection" class="hidden">
+                <button id="openReviewModal" class="btn btn-primary inline-flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                    </svg>
+                    Write Your Review
+                </button>
+            </div>
+
+            <!-- Login Prompt (Visible when NOT logged in) -->
+            <div id="loginPrompt" class="hidden">
+                <p class="text-text-secondary mb-4">Share your experience with SkillUp Buddy</p>
+                <a href="pages/user_login.html" class="btn btn-primary inline-flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+                    </svg>
+                    Sign In to Write a Review
+                </a>
+            </div>
+        </div>
+
+        <!-- Filter & Sort Options -->
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+            <div class="flex items-center space-x-4">
+                <label class="text-sm font-medium text-text-primary">Filter by Rating:</label>
+                <select id="ratingFilter" class="input text-sm px-3 py-2">
+                    <option value="all">All Ratings</option>
+                    <option value="5">5 Stars ★★★★★</option>
+                    <option value="4">4 Stars ★★★★☆</option>
+                    <option value="3">3 Stars ★★★☆☆</option>
+                    <option value="2">2 Stars ★★☆☆☆</option>
+                    <option value="1">1 Star ★☆☆☆☆</option>
+                </select>
+            </div>
+            <div class="flex items-center space-x-4">
+                <label class="text-sm font-medium text-text-primary">Sort by:</label>
+                <select id="sortFilter" class="input text-sm px-3 py-2">
+                    <option value="recent">Most Recent</option>
+                    <option value="highest">Highest Rated</option>
+                    <option value="lowest">Lowest Rated</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Reviews Loading State -->
+        <div id="reviewsLoading" class="text-center py-16">
+            <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-primary mx-auto mb-4"></div>
+            <p class="text-text-secondary text-lg">Loading amazing reviews...</p>
+        </div>
+
+        <!-- Reviews Grid -->
+        <div id="reviewsGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 hidden"></div>
+
+        <!-- No Reviews State -->
+        <div id="noReviews" class="hidden text-center py-16">
+            <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-10 h-10 text-text-tertiary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
+                </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-text-primary mb-2">No reviews yet</h3>
+            <p class="text-text-secondary mb-6">Be the first to share your experience!</p>
+            <button onclick="document.getElementById('openReviewModal')?.click()" class="btn btn-primary">
+                Write First Review
+            </button>
+        </div>
+
+        <!-- Load More Button -->
+        <div id="loadMoreSection" class="text-center mt-8 hidden">
+            <button id="loadMoreBtn" class="btn btn-secondary">
+                Load More Reviews
+                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- PRICING SECTION - Add this AFTER testimonials section in index.html -->
+
+<section id="pricing" class="py-20 bg-background">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold text-text-primary mb-4">Simple Pricing, Powerful Features</h2>
+            <p class="text-xl text-text-secondary max-w-2xl mx-auto">
+                Start free or unlock premium features with Pro
+            </p>
+        </div>
+
+        <!-- Pricing Cards -->
+        <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            
+            <!-- Free Plan -->
+            <div class="card p-8 hover:shadow-xl transition-all duration-300">
+                <div class="text-center mb-6">
+                    <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-text-primary mb-2">Free</h3>
+                    <p class="text-text-secondary mb-4">Perfect for getting started</p>
+                    <div class="mb-6">
+                        <span class="text-5xl font-bold text-text-primary">₹0</span>
+                        <span class="text-text-secondary">/forever</span>
+                    </div>
+                </div>
+
+                <ul class="space-y-4 mb-8">
+                    <li class="flex items-start">
+                        <svg class="w-5 h-5 text-success mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                        <span class="text-text-secondary">Access to 100+ free YouTube courses</span>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="w-5 h-5 text-success mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                        <span class="text-text-secondary">Skills assessment quiz</span>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="w-5 h-5 text-success mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                        <span class="text-text-secondary">Basic course recommendations</span>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="w-5 h-5 text-success mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                        <span class="text-text-secondary">Save up to 10 bookmarks</span>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="w-5 h-5 text-text-tertiary mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M13.477 14.89A6 6 0 015.11 6.524l8.367 8.368zm1.414-1.414L6.524 5.11a6 6 0 018.367 8.367zM18 10a8 8 0 11-16 0 8 8 0 0116 0z" clip-rule="evenodd"/>
+                        </svg>
+                        <span class="text-text-tertiary line-through">Course notes & materials</span>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="w-5 h-5 text-text-tertiary mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M13.477 14.89A6 6 0 015.11 6.524l8.367 8.368zm1.414-1.414L6.524 5.11a6 6 0 018.367 8.367zM18 10a8 8 0 11-16 0 8 8 0 0116 0z" clip-rule="evenodd"/>
+                        </svg>
+                        <span class="text-text-tertiary line-through">Download PDF summaries</span>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="w-5 h-5 text-text-tertiary mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M13.477 14.89A6 6 0 015.11 6.524l8.367 8.368zm1.414-1.414L6.524 5.11a6 6 0 018.367 8.367zM18 10a8 8 0 11-16 0 8 8 0 0116 0z" clip-rule="evenodd"/>
+                        </svg>
+                        <span class="text-text-tertiary line-through">Priority support</span>
+                    </li>
+                </ul>
+
+                <a href="pages/user_registration.html" class="btn bg-gray-100 text-text-primary hover:bg-gray-200 w-full text-center">
+                    Get Started Free
+                </a>
+            </div>
+
+            <!-- Pro Plan - Most Popular -->
+            <div class="card p-8 hover:shadow-xl transition-all duration-300 border-2 border-primary relative transform md:scale-105">
+                <!-- Popular Badge -->
+                <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                    <span class="bg-primary text-white px-4 py-1 rounded-full text-sm font-semibold shadow-lg">
+                        Most Popular
+                    </span>
+                </div>
+
+                <div class="text-center mb-6 mt-4">
+                    <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-text-primary mb-2">Pro</h3>
+                    <p class="text-text-secondary mb-4">For serious learners</p>
+                    <div class="mb-6">
+                        <span class="text-5xl font-bold text-text-primary">₹199</span>
+                        <span class="text-text-secondary">/month</span>
+                    </div>
+                </div>
+
+                <ul class="space-y-4 mb-8">
+                    <li class="flex items-start">
+                        <svg class="w-5 h-5 text-success mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                        <span class="text-text-primary font-semibold">Everything in Free, plus:</span>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="w-5 h-5 text-success mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                        <span class="text-text-secondary"><strong>📝 Course Notes & Study Materials</strong> - Access detailed notes for all courses</span>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="w-5 h-5 text-success mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                        <span class="text-text-secondary"><strong>📄 Download PDF Summaries</strong> - Get course summaries as PDFs</span>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="w-5 h-5 text-success mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                        <span class="text-text-secondary">AI-powered personalized recommendations</span>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="w-5 h-5 text-success mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                        <span class="text-text-secondary">Unlimited bookmarks</span>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="w-5 h-5 text-success mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                        <span class="text-text-secondary">Priority email support</span>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="w-5 h-5 text-success mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                        <span class="text-text-secondary">No ads experience</span>
+                    </li>
+                </ul>
+
+                <button onclick="handleProCheckout()" class="btn btn-primary w-full text-center shadow-lg">
+                    Upgrade to Pro
+                </button>
+                <p class="text-xs text-center text-text-tertiary mt-3">Cancel anytime • Secure payment</p>
+            </div>
+        </div>
+
+        <!-- Money Back Guarantee -->
+        <div class="mt-16 text-center">
+            <div class="inline-flex items-center space-x-2 bg-success-50 text-success px-6 py-3 rounded-full">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                </svg>
+                <span class="font-semibold">7-Day Money-Back Guarantee</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Payment Modal -->
+<div id="paymentModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 hidden p-4">
+    <div class="bg-white rounded-2xl w-full max-w-md overflow-hidden shadow-2xl transform transition-all">
+        <!-- Modal Header -->
+        <div class="bg-gradient-to-r from-primary to-secondary p-6 text-white">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-2xl font-bold">Upgrade to Pro</h3>
+                    <p class="text-white/80 text-sm mt-1">Unlock all premium features</p>
+                </div>
+                <button onclick="closePaymentModal()" class="p-2 rounded-full hover:bg-white/20 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="p-6">
+            <!-- Price Summary -->
+            <div class="bg-gray-50 rounded-lg p-4 mb-6">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-text-secondary">Pro Subscription</span>
+                    <span class="text-text-primary font-semibold">₹199/month</span>
+                </div>
+                <div class="flex justify-between items-center text-sm text-text-tertiary">
+                    <span>First month</span>
+                    <span>₹199</span>
+                </div>
+                <div class="border-t border-border mt-3 pt-3">
+                    <div class="flex justify-between items-center">
+                        <span class="font-semibold text-text-primary">Total Today</span>
+                        <span class="text-2xl font-bold text-primary">₹199</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- What You Get -->
+            <div class="mb-6">
+                <h4 class="font-semibold text-text-primary mb-3">What you'll get:</h4>
+                <ul class="space-y-2 text-sm">
+                    <li class="flex items-center text-text-secondary">
+                        <svg class="w-4 h-4 text-success mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                        Course notes & study materials
+                    </li>
+                    <li class="flex items-center text-text-secondary">
+                        <svg class="w-4 h-4 text-success mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                        Download PDF summaries
+                    </li>
+                    <li class="flex items-center text-text-secondary">
+                        <svg class="w-4 h-4 text-success mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                        Unlimited bookmarks
+                    </li>
+                    <li class="flex items-center text-text-secondary">
+                        <svg class="w-4 h-4 text-success mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                        Priority support
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Payment Button -->
+            <button onclick="initiateRazorpayPayment()" class="btn btn-primary w-full mb-3">
+                <span>Pay ₹199</span>
+            </button>
+
+            <p class="text-xs text-center text-text-tertiary">
+                Secure payment • Cancel anytime • 7-day money-back guarantee
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- REPLACE the existing payment functions in index.html with these DEMO-compatible versions -->
+
+<script>
+// ==================== DEMO MODE PAYMENT FRONTEND (FIXED) ====================
+
+// Handle Pro checkout with demo mode support
+function handleProCheckout() {
+    const token = localStorage.getItem('sb_token') || localStorage.getItem('skillupToken');
+    
+    if (!token) {
+        alert('Please login or create an account to upgrade to Pro');
+        window.location.href = 'pages/user_login.html?redirect=pricing';
+        return;
+    }
+    
+    // Show payment modal
+    document.getElementById('paymentModal').classList.remove('hidden');
+}
+
+// Close payment modal
+function closePaymentModal() {
+    const modal = document.getElementById('paymentModal');
+    if (modal) {
+        modal.classList.add('hidden');
+    }
+}
+
+// Initiate payment (Demo mode compatible)
+async function initiateRazorpayPayment() {
+    const token = localStorage.getItem('sb_token') || localStorage.getItem('skillupToken');
+    const user = JSON.parse(localStorage.getItem('sb_user') || '{}');
+    
+    if (!token) {
+        alert('Please login first');
+        window.location.href = 'pages/user_login.html';
+        return;
+    }
+
+    try {
+        console.log('🎯 Step 1: Creating order...');
+        
+        // Create order on backend
+        const response = await fetch(`${API_BASE}/api/subscription/create-order`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                plan: 'pro',
+                amount: 199
+            })
+        });
+
+        const orderData = await response.json();
+        
+        console.log('🎯 Step 2: Order created:', orderData);
+
+        if (!response.ok) {
+            throw new Error(orderData.message || 'Failed to create order');
+        }
+
+        // ==================== DEMO MODE CHECK ====================
+        if (orderData.demoMode || orderData.razorpayKeyId === 'DEMO_KEY_12345') {
+            console.log('🧪 DEMO MODE: Simulating payment...');
+            showDemoPaymentUI(orderData, user);
+            return;
+        }
+
+        // ==================== LIVE MODE: Real Razorpay ====================
+        const options = {
+            key: orderData.razorpayKeyId,
+            amount: orderData.amount,
+            currency: "INR",
+            name: "SkillUp Buddy",
+            description: "Pro Subscription - Monthly",
+            order_id: orderData.orderId,
+            handler: function (response) {
+                verifyPayment(response, false);
+            },
+            prefill: {
+                name: `${user.firstName} ${user.lastName}`,
+                email: user.email,
+                contact: user.phone || ""
+            },
+            theme: {
+                color: "#6366f1"
+            }
+        };
+
+        const razorpay = new Razorpay(options);
+        razorpay.open();
+
+    } catch (error) {
+        console.error('❌ Payment initiation error:', error);
+        alert('Failed to initiate payment: ' + error.message);
+    }
+}
+
+// ==================== DEMO MODE PAYMENT UI ====================
+function showDemoPaymentUI(orderData, user) {
+    const modal = document.getElementById('paymentModal');
+    const modalContent = modal.querySelector('.bg-white');
+    
+    // Replace modal content with demo UI
+    modalContent.innerHTML = `
+        <div class="bg-gradient-to-r from-blue-500 to-purple-600 p-6 text-white rounded-t-2xl">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-2xl font-bold">🧪 Demo Payment Mode</h3>
+                    <p class="text-white/80 text-sm mt-1">No Razorpay credentials needed!</p>
+                </div>
+                <button onclick="closePaymentModal(); location.reload();" class="p-2 rounded-full hover:bg-white/20 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="p-8">
+            <!-- Demo Notice -->
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                <div class="flex items-start">
+                    <svg class="w-6 h-6 text-blue-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                    </svg>
+                    <div class="flex-1">
+                        <h4 class="text-sm font-semibold text-blue-900 mb-1">Demo Mode Active</h4>
+                        <p class="text-xs text-blue-700">
+                            Testing without Razorpay. Click "Complete Demo Payment" to activate Pro instantly.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="bg-gray-50 rounded-lg p-4 mb-6">
+                <h4 class="font-semibold text-text-primary mb-3">Order Summary</h4>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-text-secondary">Order ID:</span>
+                        <span class="font-mono text-xs text-text-primary">${orderData.orderId}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-text-secondary">Plan:</span>
+                        <span class="font-semibold text-primary">Pro Membership</span>
+                    </div>
+                    <div class="flex justify-between pt-2 border-t border-border">
+                        <span class="font-semibold text-text-primary">Total:</span>
+                        <span class="text-2xl font-bold text-primary">₹199</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Demo Payment Buttons -->
+            <div class="space-y-3 mb-6">
+                <button onclick="completeDemoPayment('${orderData.orderId}', 'success')" 
+                    class="w-full btn btn-primary py-4 text-lg">
+                    ✅ Complete Demo Payment (Success)
+                </button>
+                
+                <button onclick="completeDemoPayment('${orderData.orderId}', 'failure')" 
+                    class="w-full btn bg-red-500 hover:bg-red-600 text-white py-3">
+                    ❌ Simulate Payment Failure
+                </button>
+            </div>
+        </div>
+    `;
+}
+
+// Complete Demo Payment (FIXED VERSION)
+async function completeDemoPayment(orderId, status) {
+    console.log('🎯 Step 3: completeDemoPayment called:', { orderId, status });
+    
+    const token = localStorage.getItem('sb_token') || localStorage.getItem('skillupToken');
+
+    if (status === 'failure') {
+        alert('❌ Demo payment failed! (This is just a simulation)');
+        closePaymentModal();
+        location.reload();
+        return;
+    }
+
+    try {
+        const btn = event.target;
+        const originalText = btn.textContent;
+        
+        btn.disabled = true;
+        btn.textContent = '⏳ Processing...';
+
+        // Fake Razorpay response
+        const demoResponse = {
+            razorpay_order_id: orderId,
+            razorpay_payment_id: `demo_pay_${Date.now()}`,
+            razorpay_signature: "demo_signature",
+            demoMode: true
+        };
+        
+        console.log('🎯 Step 4: Calling verifyPayment with:', demoResponse);
+
+        // Call backend verification
+        await verifyPayment(demoResponse, true);
+
+        btn.disabled = false;
+        btn.textContent = originalText;
+
+    } catch (error) {
+        console.error('❌ Demo payment error:', error);
+        alert('Demo payment failed: ' + error.message);
+        closePaymentModal();
+        location.reload();
+    }
+}
+
+// Verify payment on backend (FIXED VERSION)
+async function verifyPayment(paymentResponse, isDemoMode = false) {
+    const token = localStorage.getItem('sb_token') || localStorage.getItem('skillupToken');
+
+    console.log('🎯 Step 5: verifyPayment called:', { paymentResponse, isDemoMode });
+
+    try {
+        const response = await fetch(`${API_BASE}/api/subscription/verify`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                ...paymentResponse,
+                demoMode: isDemoMode
+            })
+        });
+
+        const data = await response.json();
+        
+        console.log('🎯 Step 6: Backend response:', data);
+
+        // Always close modal first
+        closePaymentModal();
+
+        if (!response.ok) {
+            throw new Error(data.message || 'Payment verification failed');
+        }
+
+        // Update localStorage
+        if (data.user) {
+            localStorage.setItem('sb_user', JSON.stringify(data.user));
+            localStorage.setItem('skillupUser', JSON.stringify(data.user));
+        }
+
+        console.log('✅ Payment verified, showing success modal');
+
+        // Show success screen
+        showSuccessModal(isDemoMode);
+
+    } catch (error) {
+        console.error('❌ Payment verification error:', error);
+        alert('Payment verification failed: ' + error.message);
+    }
+}
+
+// Show success modal (FIXED VERSION)
+function showSuccessModal(isDemoMode = false) {
+    const modal = document.createElement('div');
+    modal.className = 'fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4';
+    modal.innerHTML = `
+        <div class="bg-white rounded-2xl w-full max-w-md p-8 text-center animate-bounce-in">
+            <div class="w-20 h-20 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
+                <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+            </div>
+            <h3 class="text-2xl font-bold text-text-primary mb-2">
+                ${isDemoMode ? '🧪 Demo Pro Activated!' : 'Welcome to Pro! 🎉'}
+            </h3>
+            <p class="text-text-secondary mb-6">
+                You now have access to all Pro features for 30 days!
+            </p>
+            
+            <div class="space-y-2 mb-6">
+                <div class="flex items-center justify-center text-sm text-text-secondary">
+                    <svg class="w-4 h-4 text-success mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                    Course Notes Unlocked
+                </div>
+                <div class="flex items-center justify-center text-sm text-text-secondary">
+                    <svg class="w-4 h-4 text-success mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                    PDF Downloads Enabled
+                </div>
+            </div>
+            
+            <button onclick="this.closest('.fixed').remove(); location.reload();" 
+                class="btn btn-primary w-full">
+                Explore Pro Features
+            </button>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    
+    // Auto-reload after 3 seconds
+    setTimeout(() => {
+        location.reload();
+    }, 3000);
+}
+</script>
+
+<!-- Note: Keep the Razorpay script tag, it won't load if keys are not configured -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
+
+
+<style>
+/* Pricing animations */
+#pricing .card {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+#pricing .card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+#pricing .card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
+
+<!-- Review Modal -->
+<div id="reviewModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 hidden p-4">
+    <div class="bg-white rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl transform transition-all">
+        <!-- Modal Header -->
+        <div class="bg-gradient-to-r from-primary to-secondary p-6 text-white">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-2xl font-bold" id="modalTitle">Share Your Experience</h3>
+                    <p class="text-white/80 text-sm mt-1">Help others by sharing your learning journey</p>
+                </div>
+                <button id="closeReviewModal" class="p-2 rounded-full hover:bg-white/20 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Modal Body -->
+        <form id="reviewForm" class="p-6 space-y-6">
+            <!-- Rating Selection -->
+            <div>
+                <label class="block text-sm font-semibold text-text-primary mb-3">Your Rating *</label>
+                <div class="flex items-center space-x-2">
+                    <div id="starRating" class="flex space-x-2">
+                        <button type="button" class="star-btn text-5xl text-gray-300 hover:text-yellow-400 transition-all duration-200 hover:scale-110" data-rating="1">★</button>
+                        <button type="button" class="star-btn text-5xl text-gray-300 hover:text-yellow-400 transition-all duration-200 hover:scale-110" data-rating="2">★</button>
+                        <button type="button" class="star-btn text-5xl text-gray-300 hover:text-yellow-400 transition-all duration-200 hover:scale-110" data-rating="3">★</button>
+                        <button type="button" class="star-btn text-5xl text-gray-300 hover:text-yellow-400 transition-all duration-200 hover:scale-110" data-rating="4">★</button>
+                        <button type="button" class="star-btn text-5xl text-gray-300 hover:text-yellow-400 transition-all duration-200 hover:scale-110" data-rating="5">★</button>
+                    </div>
+                </div>
+                <p id="ratingText" class="text-sm text-text-secondary mt-2 font-medium"></p>
+                <input type="hidden" id="ratingInput" name="rating" required>
+            </div>
+
+            <!-- Review Title -->
+            <div>
+                <label for="reviewTitle" class="block text-sm font-semibold text-text-primary mb-2">Review Title *</label>
+                <input type="text" id="reviewTitle" name="title" required 
+                    class="input w-full text-lg" placeholder="Sum up your experience in one line"
+                    maxlength="100">
+                <div class="flex justify-between items-center mt-1">
+                    <p class="text-xs text-text-secondary">Make it catchy and descriptive</p>
+                    <p class="text-xs text-text-tertiary"><span id="titleCount">0</span>/100</p>
+                </div>
+            </div>
+
+            <!-- Review Comment -->
+            <div>
+                <label for="reviewComment" class="block text-sm font-semibold text-text-primary mb-2">Your Review *</label>
+                <textarea id="reviewComment" name="comment" required rows="6"
+                    class="input w-full resize-none" 
+                    placeholder="Share your experience with SkillUp Buddy. What did you like? How did it help you? What makes it special?"
+                    maxlength="500"></textarea>
+                <div class="flex justify-between items-center mt-1">
+                    <p class="text-xs text-text-secondary">Be specific and honest</p>
+                    <p class="text-xs text-text-tertiary"><span id="commentCount">0</span>/500</p>
+                </div>
+            </div>
+
+            <!-- Your Review Info Display -->
+            <div id="existingReviewInfo" class="hidden bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div class="flex items-start space-x-3">
+                    <svg class="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                    </svg>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-blue-900">You're editing your existing review</p>
+                        <p class="text-xs text-blue-700 mt-1">Your updated review will replace the previous one</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error Message -->
+            <div id="reviewError" class="hidden bg-error-50 border-l-4 border-error text-error p-4 rounded-lg">
+                <div class="flex items-start space-x-3">
+                    <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                    </svg>
+                    <p class="text-sm font-medium" id="reviewErrorText"></p>
+                </div>
+            </div>
+
+            <!-- Success Message -->
+            <div id="reviewSuccess" class="hidden bg-success-50 border-l-4 border-success text-success p-4 rounded-lg">
+                <div class="flex items-start space-x-3">
+                    <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    <p class="text-sm font-medium" id="reviewSuccessText"></p>
+                </div>
+            </div>
+
+            <!-- Submit Buttons -->
+            <div class="flex space-x-3 pt-4">
+                <button type="button" id="cancelReview" class="flex-1 btn bg-gray-100 text-text-primary hover:bg-gray-200 transition-colors">
+                    Cancel
+                </button>
+                <button type="submit" id="submitReview" class="flex-1 btn btn-primary relative overflow-hidden">
+                    <span id="submitReviewText" class="relative z-10">Submit Review</span>
+                    <svg id="submitReviewSpinner" class="animate-spin h-5 w-5 text-white absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Delete Review Option (only shown when editing) -->
+            <div id="deleteReviewSection" class="hidden border-t border-border pt-4">
+                <button type="button" id="deleteReviewBtn" class="text-error text-sm hover:underline flex items-center">
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                    </svg>
+                    Delete My Review
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-gradient-to-r from-primary to-secondary text-white">
+        <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold mb-4">Ready to Transform Your Career?</h2>
+            <p class="text-xl mb-8 opacity-90">
+                Join thousands of learners advancing their careers with AI-powered recommendations.
+            </p>
+            <div id="ctaButtons" class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="pages/user_registration.html" class="btn bg-white text-primary hover:bg-gray-100 text-lg px-8 py-4">
+                    Start Your Journey Today
+                </a>
+                <a href="pages/interactive_skills_quiz.html" class="btn bg-transparent border-2 border-white text-white hover:bg-white hover:text-primary text-lg px-8 py-4">
+                    Take Skills Quiz First
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-primary-900 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="text-2xl">🚀</div>
+                        <span class="text-xl font-semibold">SkillUp Buddy</span>
+                    </div>
+                    <p class="text-gray-300 mb-4">Empowering learners with AI-driven course recommendations.</p>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Product</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="#features" class="hover:text-white transition-colors">Features</a></li>
+                        <li><a href="pages/interactive_skills_quiz.html" class="hover:text-white transition-colors">Skills Quiz</a></li>
+                        <li><a href="pages/course_recommendations_dashboard.html" class="hover:text-white transition-colors">Courses</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Get Started</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="pages/user_registration.html" class="hover:text-white transition-colors">Sign Up</a></li>
+                        <li><a href="pages/user_login.html" class="hover:text-white transition-colors">Sign In</a></li>
+                        <li><a href="pages/user_dashboard.html" class="hover:text-white transition-colors">Dashboard</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-primary-800 mt-12 pt-8 text-center text-gray-300">
+                <p>&copy; 2025 SkillUp Buddy. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            const token = localStorage.getItem('sb_token') || localStorage.getItem('skillupToken');
+            const user = JSON.parse(localStorage.getItem('sb_user') || localStorage.getItem('skillupUser') || '{}');
+            
+            if (token && user.firstName) {
+                // User is logged in - show user menu, hide auth buttons
+                document.getElementById('authButtons').classList.add('hidden');
+                document.getElementById('userMenu').classList.remove('hidden');
+                
+                // Set user data
+                const fullName = `${user.firstName} ${user.lastName || ''}`.trim();
+                document.getElementById('userName').textContent = fullName;
+                
+                const initials = user.firstName.charAt(0) + (user.lastName ? user.lastName.charAt(0) : '');
+                document.getElementById('userInitials').textContent = initials.toUpperCase();
+                
+                if (user.profilePhoto) {
+                    document.getElementById('userAvatar').src = user.profilePhoto;
+                    document.getElementById('userAvatar').classList.remove('hidden');
+                    document.getElementById('userInitials').classList.add('hidden');
+                }
+                
+                // Update hero CTA
+                document.getElementById('heroCTA').innerHTML = `
+                    <a href="pages/user_dashboard.html" class="btn btn-primary text-lg px-8 py-4 shadow-lg">
+                        Go to Dashboard <span class="ml-2">→</span>
+                    </a>
+                    <a href="pages/course_recommendations_dashboard.html" class="btn bg-white text-primary border-2 border-primary hover:bg-primary hover:text-white text-lg px-8 py-4">
+                        Browse Courses
+                    </a>
+                `;
+                
+                // Update bottom CTA
+                document.getElementById('ctaButtons').innerHTML = `
+                    <a href="pages/user_dashboard.html" class="btn bg-white text-primary hover:bg-gray-100 text-lg px-8 py-4">
+                        Go to Dashboard
+                    </a>
+                    <a href="pages/course_recommendations_dashboard.html" class="btn bg-transparent border-2 border-white text-white hover:bg-white hover:text-primary text-lg px-8 py-4">
+                        Browse Courses
+                    </a>
+                `;
+            }
+            
+            // User menu dropdown
+            const userMenuToggle = document.getElementById('userMenuToggle');
+            const userDropdown = document.getElementById('userDropdown');
+            
+            if (userMenuToggle) {
+                userMenuToggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    userDropdown.classList.toggle('hidden');
+                });
+                
+                document.addEventListener('click', () => {
+                    userDropdown.classList.add('hidden');
+                });
+            }
+            
+            // Sign out
+            const signOutBtn = document.getElementById('signOutBtn');
+            if (signOutBtn) {
+                signOutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+        
+            if (window.UserDataSync && typeof window.UserDataSync.clearLocalData === 'function') {
+                UserDataSync.clearLocalData();
+            } else {
+                localStorage.clear();
+        }
+        
+        location.reload();
+    });
+}
+
+// Add Escape key support for modal
+document.addEventListener('keydown', function(e) {
+    const modal = document.getElementById('reviewModal');
+    if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+        closeModal();
+    }
+});
+            
+            // Smooth scrolling
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+    const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:5000'
+    : `http://${window.location.hostname}:5000`;
+    let selectedRating = 0;
+    let isEditMode = false;
+    let existingReview = null;
+    let allReviews = [];
+    let displayedReviews = [];
+    let currentRatingFilter = 'all';
+    let currentSort = 'recent';
+    const REVIEWS_PER_PAGE = 6;
+    let currentPage = 1;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        loadReviews();
+        checkIfUserCanReview();
+        setupReviewModal();
+        setupFilters();
+        setupCharacterCounters();
+    });
+
+    async function loadReviews() {
+        try {
+            const response = await fetch(`${API_BASE}/api/reviews?limit=100`);
+            const data = await response.json();
+
+            document.getElementById('reviewsLoading').classList.add('hidden');
+
+            if (data.reviews && data.reviews.length > 0) {
+                allReviews = data.reviews;
+                applyFiltersAndSort();
+                updateReviewStats(data.reviews);
+            } else {
+                showNoReviews();
+            }
+        } catch (error) {
+            console.error('Error loading reviews:', error);
+            document.getElementById('reviewsLoading').classList.add('hidden');
+            showNoReviews();
+        }
+    }
+
+    function applyFiltersAndSort() {
+        let filtered = [...allReviews];
+
+        // Apply rating filter
+        if (currentRatingFilter !== 'all') {
+            filtered = filtered.filter(r => r.rating === parseInt(currentRatingFilter));
+        }
+
+        // Apply sort
+        if (currentSort === 'highest') {
+            filtered.sort((a, b) => b.rating - a.rating || new Date(b.createdAt) - new Date(a.createdAt));
+        } else if (currentSort === 'lowest') {
+            filtered.sort((a, b) => a.rating - b.rating || new Date(b.createdAt) - new Date(a.createdAt));
+        } else {
+            filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        }
+
+        displayedReviews = filtered;
+        currentPage = 1;
+        renderReviews();
+    }
+
+    function renderReviews() {
+        const grid = document.getElementById('reviewsGrid');
+        const loadMoreSection = document.getElementById('loadMoreSection');
+        const noReviews = document.getElementById('noReviews');
+
+        if (displayedReviews.length === 0) {
+            grid.classList.add('hidden');
+            loadMoreSection.classList.add('hidden');
+            noReviews.classList.remove('hidden');
+            return;
+        }
+
+        grid.classList.remove('hidden');
+        noReviews.classList.add('hidden');
+
+        const reviewsToShow = displayedReviews.slice(0, currentPage * REVIEWS_PER_PAGE);
+        const hasMore = displayedReviews.length > reviewsToShow.length;
+
+        grid.innerHTML = reviewsToShow.map(review => {
+            const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+            const date = new Date(review.createdAt).toLocaleDateString('en-US', { 
+                year: 'numeric', month: 'short', day: 'numeric' 
+            });
+
+            return `
+                <div class="card p-6 hover:shadow-xl transition-all duration-300 review-card">
+                    <!-- Rating Stars -->
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="star-rating text-xl">${stars}</div>
+                        <span class="text-xs text-text-tertiary">${date}</span>
+                    </div>
+
+                    <!-- Review Title -->
+                    <h4 class="font-bold text-lg text-text-primary mb-3 line-clamp-2">${review.title}</h4>
+
+                    <!-- Review Comment -->
+                    <p class="text-text-secondary text-sm mb-6 line-clamp-4">${review.comment}</p>
+
+                    <!-- User Info -->
+                    <div class="flex items-center pt-4 border-t border-border">
+                        ${review.userPhoto 
+                            ? `<img src="${review.userPhoto}" alt="${review.userName}" class="w-12 h-12 rounded-full object-cover mr-3 border-2 border-primary-100">`
+                            : `<div class="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center mr-3 shadow-md">
+                                <span class="text-white font-bold text-sm">${review.userInitials}</span>
+                            </div>`
+                        }
+                        <div class="flex-1">
+                            <div class="font-semibold text-text-primary">${review.userName}</div>
+                            <div class="text-xs text-text-secondary">Verified Learner</div>
+                        </div>
+                        <svg class="w-6 h-6 text-primary opacity-20" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        // Show/hide load more button
+        if (hasMore) {
+            loadMoreSection.classList.remove('hidden');
+        } else {
+            loadMoreSection.classList.add('hidden');
+        }
+    }
+
+    function setupFilters() {
+        const ratingFilter = document.getElementById('ratingFilter');
+        const sortFilter = document.getElementById('sortFilter');
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+
+        ratingFilter.addEventListener('change', (e) => {
+            currentRatingFilter = e.target.value;
+            applyFiltersAndSort();
+        });
+
+        sortFilter.addEventListener('change', (e) => {
+            currentSort = e.target.value;
+            applyFiltersAndSort();
+        });
+
+        loadMoreBtn.addEventListener('click', () => {
+            currentPage++;
+            renderReviews();
+        });
+    }
+
+    function updateReviewStats(reviews) {
+        document.getElementById('totalReviews').textContent = reviews.length;
+        
+        if (reviews.length > 0) {
+            const avgRating = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+            document.getElementById('averageRating').textContent = avgRating.toFixed(1);
+        }
+    }
+
+    function showNoReviews() {
+        document.getElementById('noReviews').classList.remove('hidden');
+    }
+
+    async function checkIfUserCanReview() {
+        const token = localStorage.getItem('sb_token') || localStorage.getItem('skillupToken');
+        
+        if (token) {
+            document.getElementById('writeReviewSection').classList.remove('hidden');
+            document.getElementById('loginPrompt').classList.add('hidden');
+            
+            // Check if user already has a review
+            try {
+                const response = await fetch(`${API_BASE}/api/reviews/mine`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (response.ok) {
+                    existingReview = await response.json();
+                    isEditMode = true;
+                    document.getElementById('openReviewModal').innerHTML = `
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                        </svg>
+                        Edit Your Review
+                    `;
+                }
+            } catch (error) {
+                // No existing review - that's fine
+            }
+        } else {
+            document.getElementById('loginPrompt').classList.remove('hidden');
+            document.getElementById('writeReviewSection').classList.add('hidden');
+        }
+    }
+
+    function setupReviewModal() {
+        const modal = document.getElementById('reviewModal');
+        const openBtn = document.getElementById('openReviewModal');
+        const closeBtn = document.getElementById('closeReviewModal');
+        const cancelBtn = document.getElementById('cancelReview');
+        const form = document.getElementById('reviewForm');
+        const stars = document.querySelectorAll('.star-btn');
+        const deleteBtn = document.getElementById('deleteReviewBtn');
+
+        if (openBtn) {
+            openBtn.addEventListener('click', () => {
+                if (existingReview) {
+                    populateFormWithExisting();
+                }
+                modal.classList.remove('hidden');
+            });
+        }
+
+        closeBtn.addEventListener('click', closeModal);
+        cancelBtn.addEventListener('click', closeModal);
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // Star rating
+        stars.forEach(star => {
+            star.addEventListener('click', function(e) {
+                e.preventDefault();
+                selectedRating = parseInt(this.dataset.rating);
+                updateStars(selectedRating);
+                document.getElementById('ratingInput').value = selectedRating;
+            });
+
+            star.addEventListener('mouseenter', function() {
+                const rating = parseInt(this.dataset.rating);
+                updateStars(rating, true);
+            });
+        });
+
+        document.getElementById('starRating').addEventListener('mouseleave', () => {
+            updateStars(selectedRating);
+        });
+
+        form.addEventListener('submit', handleReviewSubmit);
+        deleteBtn.addEventListener('click', handleReviewDelete);
+    }
+
+    function setupCharacterCounters() {
+        const titleInput = document.getElementById('reviewTitle');
+        const commentInput = document.getElementById('reviewComment');
+        const titleCount = document.getElementById('titleCount');
+        const commentCount = document.getElementById('commentCount');
+
+        titleInput.addEventListener('input', () => {
+            titleCount.textContent = titleInput.value.length;
+        });
+
+        commentInput.addEventListener('input', () => {
+            commentCount.textContent = commentInput.value.length;
+        });
+    }
+
+    function updateStars(rating, isHover = false) {
+        const stars = document.querySelectorAll('.star-btn');
+        const ratingText = ['', 'Poor', 'Fair', 'Good', 'Very Good', 'Excellent'];
+        
+        stars.forEach((star, index) => {
+            if (index < rating) {
+                star.classList.remove('text-gray-300');
+                star.classList.add('text-yellow-400');
+            } else {
+                star.classList.add('text-gray-300');
+                star.classList.remove('text-yellow-400');
+            }
+        });
+
+        if (!isHover) {
+            const textEl = document.getElementById('ratingText');
+            textEl.textContent = rating > 0 ? `${ratingText[rating]} (${rating}/5)` : '';
+        }
+    }
+
+    function populateFormWithExisting() {
+        document.getElementById('modalTitle').textContent = 'Edit Your Review';
+        document.getElementById('reviewTitle').value = existingReview.title;
+        document.getElementById('reviewComment').value = existingReview.comment;
+        document.getElementById('titleCount').textContent = existingReview.title.length;
+        document.getElementById('commentCount').textContent = existingReview.comment.length;
+        selectedRating = existingReview.rating;
+        updateStars(selectedRating);
+        document.getElementById('ratingInput').value = selectedRating;
+        document.getElementById('existingReviewInfo').classList.remove('hidden');
+        document.getElementById('deleteReviewSection').classList.remove('hidden');
+        document.getElementById('submitReviewText').textContent = 'Update Review';
+    }
+
+    async function handleReviewSubmit(e) {
+        e.preventDefault();
+
+        const token = localStorage.getItem('sb_token') || localStorage.getItem('skillupToken');
+        if (!token) {
+            window.location.href = 'pages/user_login.html';
+            return;
+        }
+
+        const title = document.getElementById('reviewTitle').value.trim();
+        const comment = document.getElementById('reviewComment').value.trim();
+        const rating = selectedRating;
+
+        if (!rating || !title || !comment) {
+            showError('Please fill in all fields and select a rating');
+            return;
+        }
+
+        if (title.length < 10) {
+            showError('Review title must be at least 10 characters');
+            return;
+        }
+
+        if (comment.length < 20) {
+            showError('Review comment must be at least 20 characters');
+            return;
+        }
+
+        const submitBtn = document.getElementById('submitReview');
+        const submitText = document.getElementById('submitReviewText');
+        const spinner = document.getElementById('submitReviewSpinner');
+
+        submitBtn.disabled = true;
+        submitText.classList.add('opacity-0');
+        spinner.classList.remove('hidden');
+
+        try {
+            const url = isEditMode ? `${API_BASE}/api/reviews/mine` : `${API_BASE}/api/reviews`;
+            const method = isEditMode ? 'PUT' : 'POST';
+
+            const response = await fetch(url, {
+                method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ rating, title, comment })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to submit review');
+            }
+
+            showSuccess(isEditMode ? 'Review updated successfully! ✓' : 'Review submitted successfully! ✓');
+            
+            setTimeout(() => {
+                closeModal();
+                location.reload();
+            }, 1500);
+
+        } catch (error) {
+            showError(error.message);
+            submitBtn.disabled = false;
+            submitText.classList.remove('opacity-0');
+            spinner.classList.add('hidden');
+        }
+    }
+
+    async function handleReviewDelete() {
+        if (!confirm('Are you sure you want to delete your review? This action cannot be undone.')) {
+            return;
+        }
+
+        const token = localStorage.getItem('sb_token') || localStorage.getItem('skillupToken');
+        if (!token) return;
+
+        try {
+            const response = await fetch(`${API_BASE}/api/reviews/mine`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to delete review');
+            }
+
+            showSuccess('Review deleted successfully!');
+            setTimeout(() => {
+                closeModal();
+                location.reload();
+            }, 1000);
+
+        } catch (error) {
+            showError(error.message);
+        }
+    }
+
+    function closeModal() {
+        const modal = document.getElementById('reviewModal');
+        modal.classList.add('hidden');
+        document.getElementById('reviewForm').reset();
+        selectedRating = 0;
+        updateStars(0);
+        hideMessages();
+        document.getElementById('existingReviewInfo').classList.add('hidden');
+        document.getElementById('deleteReviewSection').classList.add('hidden');
+        document.getElementById('modalTitle').textContent = 'Share Your Experience';
+        document.getElementById('submitReviewText').textContent = 'Submit Review';
+        document.getElementById('titleCount').textContent = '0';
+        document.getElementById('commentCount').textContent = '0';
+    }
+
+    function showError(message) {
+        const errorDiv = document.getElementById('reviewError');
+        const errorText = document.getElementById('reviewErrorText');
+        errorText.textContent = message;
+        errorDiv.classList.remove('hidden');
+        setTimeout(() => errorDiv.classList.add('hidden'), 5000);
+    }
+
+    function showSuccess(message) {
+        const successDiv = document.getElementById('reviewSuccess');
+        const successText = document.getElementById('reviewSuccessText');
+        successText.textContent = message;
+        successDiv.classList.remove('hidden');
+    }
+
+    function hideMessages() {
+        document.getElementById('reviewError').classList.add('hidden');
+        document.getElementById('reviewSuccess').classList.add('hidden');
+    }
+</script>
+<script src="js/userDataSync.js"></script>
+
+</body>
+</html>

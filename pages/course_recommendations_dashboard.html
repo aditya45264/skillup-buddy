@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Course Recommendations - SkillUp Buddy</title>
+    
+    <link rel="stylesheet" href="../css/main.css" />
+    <script src="../js/recommendationEngine.js"></script>
+</head>
+<body class="bg-background min-h-screen">
+    <!-- Header -->
+    <header class="bg-surface shadow-sm border-b border-border sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="../index.html" class="flex items-center space-x-2">
+                        <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.84L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.84l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xl font-semibold text-text-primary">SkillUp Buddy</span>
+                    </a>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="hidden md:flex flex-1 max-w-lg mx-8">
+                    <div class="relative w-full">
+                        <input type="text" id="globalSearch" placeholder="Search courses..." class="input w-full pl-10 pr-4" />
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3">
+                            <svg class="w-5 h-5 text-text-tertiary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Menu -->
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <button id="userMenuToggle" class="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-50">
+                            <img id="userAvatar" src="" alt="Avatar" class="w-8 h-8 rounded-full object-cover hidden" />
+                            <span id="userInitials" class="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center text-primary font-semibold text-sm"></span>
+                            <span id="userName" class="hidden sm:block text-text-primary font-medium"></span>
+                            <svg class="w-4 h-4 text-text-tertiary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                        <div id="userDropdown" class="absolute right-0 mt-2 w-48 bg-surface rounded-lg shadow-lg border border-border hidden z-50">
+                            <div class="py-1">
+                                <a href="user_dashboard.html" class="block px-4 py-2 text-sm text-text-primary hover:bg-gray-50">Dashboard</a>
+                                <a href="user_profile_management.html" class="block px-4 py-2 text-sm text-text-primary hover:bg-gray-50">Profile</a>
+                                <a href="interactive_skills_quiz.html" class="block px-4 py-2 text-sm text-text-primary hover:bg-gray-50">Retake Quiz</a>
+                                <div class="border-t border-border my-1"></div>
+                                <a href="#" id="signOutBtn" class="block px-4 py-2 text-sm text-text-primary hover:bg-gray-50">Sign Out</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="mb-8">
+            <h1 class="text-3xl font-semibold text-text-primary mb-2">Your Personalized Course Recommendations</h1>
+            <p class="text-text-secondary">Based on your quiz results, we've curated the perfect learning path for you</p>
+        </div>
+
+        <!-- Quiz Results Summary -->
+        <div class="card p-6 mb-8 bg-gradient-to-r from-primary-50 to-secondary-50 border border-primary-100">
+            <div class="flex items-center justify-between flex-wrap gap-4">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-text-primary">Quiz Completed Successfully!</h3>
+                        <p class="text-text-secondary">
+                            Your skill level: <span id="skillLevel" class="font-medium text-primary">Loading...</span>
+                            • Interests: <span id="interestsSpan" class="font-medium text-primary">Loading...</span>
+                        </p>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="window.location.href='interactive_skills_quiz.html'">
+                    Retake Quiz
+                </button>
+            </div>
+        </div>
+
+        <!-- Free YouTube Courses Section -->
+        <section id="freeCoursesSection" class="mb-12">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-semibold text-text-primary">Free YouTube Courses</h2>
+                <button id="showMoreFree" class="text-primary hover:text-primary-700 font-medium hidden">
+                    See more →
+                </button>
+            </div>
+
+            <!-- Filter Controls -->
+            <div class="flex flex-wrap items-center gap-4 mb-6 p-4 bg-surface rounded-lg border border-border">
+                <select id="freeTopicFilter" class="input text-sm">
+                    <option value="">All Topics</option>
+                    <option value="programming">Programming</option>
+                    <option value="design">Design</option>
+                    <option value="business">Business</option>
+                    <option value="marketing">Marketing</option>
+                </select>
+                <select id="freeDifficultyFilter" class="input text-sm">
+                    <option value="">All Levels</option>
+                    <option value="beginner">Beginner</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="advanced">Advanced</option>
+                </select>
+                <button id="resetFreeFilters" class="text-text-secondary hover:text-primary text-sm">Reset</button>
+            </div>
+
+            <div id="freeCoursesLoading" class="text-center py-12">
+                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+                <p class="mt-4 text-text-secondary">Loading courses...</p>
+            </div>
+
+            <div id="freeCoursesList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 hidden"></div>
+            
+            <div id="freeCoursesError" class="hidden text-center py-12">
+                <p class="text-error">Failed to load courses. Please try again.</p>
+            </div>
+        </section>
+
+        <!-- Paid Platform Courses Section -->
+        <section id="paidCoursesSection">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-semibold text-text-primary">Paid Platform Courses</h2>
+            </div>
+
+            <!-- Filter Controls -->
+            <div class="flex flex-wrap items-center gap-4 mb-6 p-4 bg-surface rounded-lg border border-border">
+                <select id="paidTopicFilter" class="input text-sm">
+                    <option value="">All Topics</option>
+                    <option value="programming">Programming</option>
+                    <option value="design">Design</option>
+                    <option value="business">Business</option>
+                    <option value="marketing">Marketing</option>
+                </select>
+                <select id="paidDifficultyFilter" class="input text-sm">
+                    <option value="">All Levels</option>
+                    <option value="beginner">Beginner</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="advanced">Advanced</option>
+                </select>
+                <select id="paidSortBy" class="input text-sm">
+                    <option value="rating">Sort by Rating</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                </select>
+                <button id="resetPaidFilters" class="text-text-secondary hover:text-primary text-sm">Reset</button>
+            </div>
+
+            <div id="paidCoursesLoading" class="text-center py-12">
+                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+                <p class="mt-4 text-text-secondary">Loading courses...</p>
+            </div>
+
+            <div id="paidCoursesList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden"></div>
+            
+            <div id="paidCoursesError" class="hidden text-center py-12">
+                <p class="text-error">Failed to load courses. Please try again.</p>
+            </div>
+        </section>
+
+        <!-- Video Modal -->
+        <div id="videoModal" class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 hidden">
+            <div class="bg-surface rounded-xl w-full max-w-lg mx-4 overflow-hidden shadow-xl">
+                <div class="flex items-center justify-between px-4 py-3 border-b border-border">
+                    <h3 class="text-lg font-semibold text-text-primary">Watch Course</h3>
+                    <button id="closeVideoModal" class="p-1 rounded-full hover:bg-gray-200">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="bg-black">
+                    <iframe id="videoIframe" class="w-full" style="height: 280px;" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="px-4 py-3 flex justify-between items-center border-t border-border">
+                    <span id="videoTitle" class="text-sm text-text-secondary"></span>
+                    <a id="openInYoutube" href="#" target="_blank" class="text-sm text-primary hover:text-primary-700 font-medium">
+                        Open on YouTube ↗
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+   <script>
+const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:5000'
+    : `http://${window.location.hostname}:5000`;    
+    let allFreeCourses = [];
+    let allPaidCourses = [];
+    let filteredFreeCourses = [];
+    let filteredPaidCourses = [];
+    let bookmarkedCourses = [];
+
+    document.addEventListener('DOMContentLoaded', async function() {
+        console.log('🚀 Course Recommendations Page Loading...');
+        
+        // Load user data
+        loadUserData();
+        
+        // Load quiz results
+        loadQuizResults();
+        
+        // Load bookmarks
+        bookmarkedCourses = JSON.parse(localStorage.getItem('bookmarkedCourses') || '[]');
+        console.log('📚 Current bookmarks:', bookmarkedCourses.length);
+        
+        // User menu toggle
+        const userMenuToggle = document.getElementById('userMenuToggle');
+        const userDropdown = document.getElementById('userDropdown');
+        
+        if (userMenuToggle && userDropdown) {
+            userMenuToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                userDropdown.classList.toggle('hidden');
+            });
+            
+            document.addEventListener('click', () => {
+                userDropdown.classList.add('hidden');
+            });
+        }
+
+        // Sign out
+        const signOutBtn = document.getElementById('signOutBtn');
+        if (signOutBtn) {
+            signOutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (window.UserDataSync) {
+                    UserDataSync.clearLocalData();
+                } else {
+                    localStorage.clear();
+                }
+                window.location.href = 'user_login.html';
+            });
+        }
+
+        
+
+        // Load courses
+        await loadAllCourses();
+        
+        // Setup filters
+        setupFilters();
+
+        await checkProStatus();  // This checks if user is Pro
+setTimeout(() => {
+    updateCourseCardButtons(userIsPro);  // This adds the buttons
+}, 500);
+        
+        // Setup search
+        const searchInput = document.getElementById('globalSearch');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                handleSearch(e.target.value);
+            });
+        }
+
+        // Video modal
+        setupVideoModal();
+        
+        console.log('✅ Page loaded successfully');
+    });
+
+    function loadUserData() {
+        const user = JSON.parse(localStorage.getItem('sb_user') || localStorage.getItem('skillupUser') || '{}');
+        
+        if (user.firstName) {
+            const fullName = `${user.firstName} ${user.lastName || ''}`.trim();
+            const userNameEl = document.getElementById('userName');
+            if (userNameEl) userNameEl.textContent = fullName;
+            
+            const initials = user.firstName.charAt(0) + (user.lastName ? user.lastName.charAt(0) : '');
+            const initialsEl = document.getElementById('userInitials');
+            if (initialsEl) initialsEl.textContent = initials.toUpperCase();
+            
+            if (user.profilePhoto) {
+                const avatarEl = document.getElementById('userAvatar');
+                const initialsContainer = document.getElementById('userInitials');
+                if (avatarEl && initialsContainer) {
+                    avatarEl.src = user.profilePhoto;
+                    avatarEl.classList.remove('hidden');
+                    initialsContainer.classList.add('hidden');
+                }
+            }
+        }
+    }
+
+    function loadQuizResults() {
+        const quizData = localStorage.getItem('skillsQuizResults');
+        if (quizData) {
+            try {
+                const { summary } = JSON.parse(quizData);
+                if (summary) {
+                    const skillLevelEl = document.getElementById('skillLevel');
+                    const interestsEl = document.getElementById('interestsSpan');
+                    
+                    if (skillLevelEl) {
+                        skillLevelEl.textContent = 
+                            summary.skillLevel.charAt(0).toUpperCase() + summary.skillLevel.slice(1);
+                    }
+                    if (interestsEl) {
+                        interestsEl.textContent = 
+                            summary.interests?.join(', ') || 'Not specified';
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading quiz results:', error);
+            }
+        }
+    }
+
+    async function loadAllCourses() {
+        console.log('📥 Fetching courses from API...');
+        
+        try {
+            const [freeRes, paidRes] = await Promise.all([
+                fetch(`${API_BASE}/api/courses?type=free&limit=100`),
+                fetch(`${API_BASE}/api/courses?type=paid&limit=100`)
+            ]);
+
+            if (!freeRes.ok || !paidRes.ok) {
+                throw new Error('Failed to fetch courses');
+            }
+
+            const freeData = await freeRes.json();
+            const paidData = await paidRes.json();
+
+            allFreeCourses = freeData.courses || [];
+            allPaidCourses = paidData.courses || [];
+            
+            console.log(`✅ Loaded ${allFreeCourses.length} free courses`);
+            console.log(`✅ Loaded ${allPaidCourses.length} paid courses`);
+
+            // Apply smart filtering based on quiz
+            const quizData = localStorage.getItem('skillsQuizResults');
+            if (quizData) {
+                console.log('🎯 Applying smart recommendations...');
+                applySmartRecommendations(JSON.parse(quizData));
+            } else {
+                console.log('📋 No quiz - showing all courses');
+                filteredFreeCourses = [...allFreeCourses].sort((a, b) => b.rating - a.rating);
+                filteredPaidCourses = [...allPaidCourses].sort((a, b) => b.rating - a.rating);
+            }
+
+            renderCourses();
+
+        } catch (error) {
+            console.error('❌ Error loading courses:', error);
+            showError();
+        }
+    }
+
+    function applySmartRecommendations(quizData) {
+        const { answers } = quizData;
+        if (!answers) {
+            filteredFreeCourses = [...allFreeCourses];
+            filteredPaidCourses = [...allPaidCourses];
+            return;
+        }
+
+        const interests = answers[3] || [];
+        const budget = answers[6] || '';
+        const skillLevel = answers[1] || '';
+
+        // Map interests to topics
+        const topicMap = {
+            'web-dev': 'programming',
+            'mobile-dev': 'programming',
+            'data-science': 'programming',
+            'design': 'design',
+            'devops': 'programming',
+            'cybersecurity': 'programming',
+            'programming': 'programming',
+            'business': 'business',
+            'marketing': 'marketing'
+        };
+
+        const relevantTopics = interests.map(i => topicMap[i] || i);
+
+        // Filter free courses
+        filteredFreeCourses = allFreeCourses.filter(course => {
+            if (relevantTopics.length > 0 && !relevantTopics.includes(course.topic)) {
+                return false;
+            }
+            return true;
+        }).sort((a, b) => b.rating - a.rating);
+
+        // Filter paid courses based on budget
+        filteredPaidCourses = allPaidCourses.filter(course => {
+            if (budget === 'free-only') return false;
+            if (budget === 'under-500' && course.price > 500) return false;
+            if (budget === '500-2000' && (course.price < 500 || course.price > 2000)) return false;
+            
+            if (relevantTopics.length > 0 && !relevantTopics.includes(course.topic)) {
+                return false;
+            }
+            return true;
+        }).sort((a, b) => b.rating - a.rating);
+
+        console.log(`✅ Smart filtering applied: ${filteredFreeCourses.length} free, ${filteredPaidCourses.length} paid`);
+    }
+
+    function setupFilters() {
+        const filterIds = [
+            'freeTopicFilter', 'freeDifficultyFilter',
+            'paidTopicFilter', 'paidDifficultyFilter', 'paidSortBy',
+            'resetFreeFilters', 'resetPaidFilters'
+        ];
+
+        filterIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                if (id.includes('reset')) {
+                    el.addEventListener('click', applyFilters);
+                } else {
+                    el.addEventListener('change', applyFilters);
+                }
+            }
+        });
+    }
+
+    function applyFilters() {
+        const freeTopic = document.getElementById('freeTopicFilter')?.value || '';
+        const freeDiff = document.getElementById('freeDifficultyFilter')?.value || '';
+        const paidTopic = document.getElementById('paidTopicFilter')?.value || '';
+        const paidDiff = document.getElementById('paidDifficultyFilter')?.value || '';
+        const sortBy = document.getElementById('paidSortBy')?.value || 'rating';
+
+        filteredFreeCourses = allFreeCourses.filter(c => {
+            if (freeTopic && c.topic !== freeTopic) return false;
+            if (freeDiff && c.difficulty !== freeDiff) return false;
+            return true;
+        });
+
+        filteredPaidCourses = allPaidCourses.filter(c => {
+            if (paidTopic && c.topic !== paidTopic) return false;
+            if (paidDiff && c.difficulty !== paidDiff) return false;
+            return true;
+        });
+
+        if (sortBy === 'price-low') {
+            filteredPaidCourses.sort((a, b) => a.price - b.price);
+        } else if (sortBy === 'price-high') {
+            filteredPaidCourses.sort((a, b) => b.price - a.price);
+        } else {
+            filteredPaidCourses.sort((a, b) => b.rating - a.rating);
+        }
+
+        renderCourses();
+    }
+
+    function handleSearch(term) {
+        const search = term.toLowerCase();
+        
+        filteredFreeCourses = allFreeCourses.filter(c =>
+            c.title.toLowerCase().includes(search) ||
+            c.description.toLowerCase().includes(search) ||
+            c.provider.toLowerCase().includes(search)
+        );
+
+        filteredPaidCourses = allPaidCourses.filter(c =>
+            c.title.toLowerCase().includes(search) ||
+            c.description.toLowerCase().includes(search) ||
+            c.provider.toLowerCase().includes(search)
+        );
+
+        renderCourses();
+    }
+
+    function renderCourses() {
+        const freeLoading = document.getElementById('freeCoursesLoading');
+        const paidLoading = document.getElementById('paidCoursesLoading');
+        
+        if (freeLoading) freeLoading.classList.add('hidden');
+        if (paidLoading) paidLoading.classList.add('hidden');
+        
+        renderFreeCourses();
+        renderPaidCourses();
+    }
+
+    function renderFreeCourses() {
+    const container = document.getElementById('freeCoursesList');
+    if (!container) return;
+    
+    container.classList.remove('hidden');
+
+    if (filteredFreeCourses.length === 0) {
+        container.innerHTML = '<p class="col-span-full text-center text-text-secondary py-8">No courses found.</p>';
+        return;
+    }
+
+    container.innerHTML = filteredFreeCourses.map(course => {
+        const courseId = course._id?.$oid || course._id;
+        const courseIdStr = String(courseId);
+        const isBookmarked = bookmarkedCourses.includes(courseIdStr);
+        
+        return `
+            <div class="card p-4 hover:shadow-lg transition-shadow course-card" data-course-id="${courseIdStr}">
+                <div class="relative mb-4">
+                    <img src="${course.thumbnail}" alt="${course.title}" 
+                        class="w-full aspect-video object-cover rounded-lg"
+                        onerror="this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=400'">
+                    
+                    <button 
+                        onclick="toggleBookmark('${courseIdStr}')" 
+                        data-course-id="${courseIdStr}"
+                        class="absolute top-2 right-2 p-2 bg-white rounded-full shadow-md hover:shadow-lg ${isBookmarked ? 'text-error' : 'text-text-tertiary'}">
+                        <svg class="w-5 h-5 ${isBookmarked ? 'fill-current' : ''}" stroke="currentColor" viewBox="0 0 24 24" fill="none">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                        </svg>
+                    </button>
+                    
+                    <div class="absolute bottom-2 left-2 bg-error text-white px-2 py-1 rounded text-xs font-semibold">FREE</div>
+                </div>
+                <h3 class="font-semibold text-text-primary mb-2 line-clamp-2">${course.title}</h3>
+                <p class="text-sm text-text-secondary mb-3">${course.provider}</p>
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center">
+                        <span class="text-yellow-400">★</span>
+                        <span class="text-sm text-text-secondary ml-1">${course.rating}</span>
+                    </div>
+                    <span class="text-sm text-text-secondary">${course.duration}</span>
+                </div>
+                <button onclick="openVideo('${courseId}', '${course.videoId}', '${course.title}', '${course.url}')" 
+                    class="btn btn-primary w-full text-sm">Watch Now</button>
+            </div>
+        `;
+    }).join('');
+}
+    function renderPaidCourses() {
+    const container = document.getElementById('paidCoursesList');
+    if (!container) return;
+    
+    container.classList.remove('hidden');
+
+    if (filteredPaidCourses.length === 0) {
+        container.innerHTML = '<p class="col-span-full text-center text-text-secondary py-8">No courses found.</p>';
+        return;
+    }
+
+    container.innerHTML = filteredPaidCourses.map(course => {
+        const courseId = course._id?.$oid || course._id;
+        const courseIdStr = String(courseId);
+        const isBookmarked = bookmarkedCourses.includes(courseIdStr);
+        
+        return `
+            <div class="card p-4 hover:shadow-lg transition-shadow course-card" data-course-id="${courseIdStr}">
+                <div class="relative mb-4">
+                    <img src="${course.thumbnail}" alt="${course.title}" 
+                        class="w-full aspect-video object-cover rounded-lg"
+                        onerror="this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=400'">
+                    
+                    <button 
+                        onclick="toggleBookmark('${courseIdStr}')" 
+                        data-course-id="${courseIdStr}"
+                        class="absolute top-2 right-2 p-2 bg-white rounded-full shadow-md hover:shadow-lg ${isBookmarked ? 'text-error' : 'text-text-tertiary'}">
+                        <svg class="w-5 h-5 ${isBookmarked ? 'fill-current' : ''}" stroke="currentColor" viewBox="0 0 24 24" fill="none">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                        </svg>
+                    </button>
+                    
+                    <div class="absolute bottom-2 left-2 bg-accent text-white px-2 py-1 rounded text-xs">${course.platform}</div>
+                </div>
+                <h3 class="font-semibold text-text-primary mb-2 line-clamp-2">${course.title}</h3>
+                <p class="text-sm text-text-secondary mb-3">${course.provider}</p>
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center">
+                        <span class="text-yellow-400">★</span>
+                        <span class="text-sm text-text-secondary ml-1">${course.rating}</span>
+                    </div>
+                    <span class="text-sm text-text-secondary">${course.duration}</span>
+                </div>
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <span class="text-lg font-semibold text-text-primary">₹${course.price}</span>
+                        ${course.originalPrice > 0 ? `<span class="text-sm text-text-tertiary line-through ml-2">₹${course.originalPrice}</span>` : ''}
+                    </div>
+                </div>
+                <a href="${course.url}" target="_blank" class="btn btn-primary w-full text-sm">Enroll Now</a>
+            </div>
+        `;
+    }).join('');
+}
+// Add these functions to your course_recommendations_dashboard.html script
+// Replace the existing toggleBookmark and related functions
+
+// Toast notification system
+function showToast(message, type = 'info') {
+    const existingToast = document.getElementById('toast');
+    if (existingToast) existingToast.remove();
+
+    const toast = document.createElement('div');
+    toast.id = 'toast';
+    toast.className = `fixed bottom-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg transform transition-all duration-300 ${
+        type === 'success' ? 'bg-success text-white' :
+        type === 'error' ? 'bg-error text-white' :
+        'bg-primary text-white'
+    }`;
+    
+    toast.innerHTML = `
+        <div class="flex items-center space-x-2">
+            ${type === 'success' ? 
+                '<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>' :
+            type === 'error' ?
+                '<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>' :
+                '<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>'
+            }
+            <span class="font-medium">${message}</span>
+        </div>
+    `;
+
+    document.body.appendChild(toast);
+    setTimeout(() => toast.style.opacity = '1', 10);
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+// Bookmark toggle with proper UI update
+async function toggleBookmark(courseId) {
+    console.log('🔖 Toggle bookmark for course:', courseId);
+    
+    const token = localStorage.getItem('sb_token') || localStorage.getItem('skillupToken');
+    
+    if (!token) {
+        showToast('Please login to bookmark courses', 'error');
+        setTimeout(() => window.location.href = 'user_login.html', 1500);
+        return;
+    }
+
+    const courseIdStr = String(courseId);
+    const currentBookmarks = JSON.parse(localStorage.getItem('bookmarkedCourses') || '[]');
+    const wasBookmarked = currentBookmarks.includes(courseIdStr);
+    const action = wasBookmarked ? 'remove' : 'add';
+
+    // Optimistic UI update
+    let newBookmarks;
+    if (action === 'add') {
+        newBookmarks = [...currentBookmarks, courseIdStr];
+    } else {
+        newBookmarks = currentBookmarks.filter(id => id !== courseIdStr);
+    }
+    
+    localStorage.setItem('bookmarkedCourses', JSON.stringify(newBookmarks));
+    bookmarkedCourses = newBookmarks;
+    
+    // Update UI
+    updateBookmarkButton(courseIdStr, !wasBookmarked);
+
+    try {
+        const response = await fetch(`${API_BASE}/api/user/bookmarks`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ courseId: courseIdStr, action })
+        });
+
+        if (!response.ok) throw new Error('Failed to update bookmark');
+
+        const data = await response.json();
+        
+        // Sync with server response
+        if (data.bookmarkedCourses) {
+            bookmarkedCourses = data.bookmarkedCourses.map(id => String(id));
+            localStorage.setItem('bookmarkedCourses', JSON.stringify(bookmarkedCourses));
+        }
+
+        showToast(action === 'add' ? '❤️ Course saved!' : 'Bookmark removed', 'success');
+
+    } catch (error) {
+        console.error('❌ Error:', error);
+        
+        // Revert on error
+        localStorage.setItem('bookmarkedCourses', JSON.stringify(currentBookmarks));
+        bookmarkedCourses = currentBookmarks;
+        updateBookmarkButton(courseIdStr, wasBookmarked);
+        
+        showToast('Failed to update bookmark. Please try again.', 'error');
+    }
+}
+// Update specific bookmark button UI
+function updateBookmarkButton(courseId, isBookmarked) {
+    const courseIdStr = String(courseId);
+    const buttons = document.querySelectorAll(`[data-course-id="${courseIdStr}"]`);
+    
+    buttons.forEach(button => {
+        const svg = button.querySelector('svg');
+        
+        if (isBookmarked) {
+            button.classList.remove('text-text-tertiary');
+            button.classList.add('text-error');
+            if (svg) svg.classList.add('fill-current');
+        } else {
+            button.classList.remove('text-error');
+            button.classList.add('text-text-tertiary');
+            if (svg) svg.classList.remove('fill-current');
+        }
+    });
+}
+// Video modal functions
+function setupVideoModal() {
+    const modal = document.getElementById('videoModal');
+    const closeBtn = document.getElementById('closeVideoModal');
+    
+    if (!modal || !closeBtn) return;
+    
+    closeBtn.addEventListener('click', closeVideo);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeVideo();
+    });
+    
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+            closeVideo();
+        }
+    });
+}
+
+function openVideo(courseId, videoId, title, url) {
+    if (!videoId) {
+        window.open(url, '_blank');
+        return;
+    }
+    
+    const modal = document.getElementById('videoModal');
+    const iframe = document.getElementById('videoIframe');
+    const titleEl = document.getElementById('videoTitle');
+    const linkEl = document.getElementById('openInYoutube');
+    
+    if (modal && iframe) {
+        iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+        if (titleEl) titleEl.textContent = title;
+        if (linkEl) linkEl.href = url;
+        modal.classList.remove('hidden');
+    }
+}
+
+function closeVideo() {
+    const modal = document.getElementById('videoModal');
+    const iframe = document.getElementById('videoIframe');
+    if (modal && iframe) {
+        modal.classList.add('hidden');
+        iframe.src = '';
+    }
+}
+
+function showError() {
+    const freeLoading = document.getElementById('freeCoursesLoading');
+    const paidLoading = document.getElementById('paidCoursesLoading');
+    const freeError = document.getElementById('freeCoursesError');
+    const paidError = document.getElementById('paidCoursesError');
+    
+    if (freeLoading) freeLoading.classList.add('hidden');
+    if (paidLoading) paidLoading.classList.add('hidden');
+    if (freeError) freeError.classList.remove('hidden');
+    if (paidError) paidError.classList.remove('hidden');
+}
+
+// Helper function to escape HTML
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Make functions globally available
+window.toggleBookmark = toggleBookmark;
+window.showToast = showToast;
+window.openVideo = openVideo;
+window.closeVideo = closeVideo;
+</script>
+<!-- Pro Features Integration -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<!-- ADD THIS TO course_recommendations_dashboard.html -->
+<!-- Add this script section to check Pro status and show Pro features -->
+
+<script>
+// Global Pro status checker
+let userIsPro = false;
+
+async function checkProStatus() {
+    const token = localStorage.getItem('sb_token') || localStorage.getItem('skillupToken');
+    
+    if (!token) {
+        userIsPro = false;
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE}/api/pro-features/check`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            userIsPro = data.isPro;
+            
+            // Update UI based on Pro status
+            updateProFeatureUI(data);
+            
+            console.log('Pro Status:', userIsPro ? '✅ PRO' : '❌ FREE');
+        }
+    } catch (error) {
+        console.error('Error checking Pro status:', error);
+        userIsPro = false;
+    }
+}
+
+function updateProFeatureUI(proData) {
+    // Show Pro badge in header if user is Pro
+    const userMenuBtn = document.querySelector('#userMenuToggle');
+    if (userMenuBtn && proData.isPro) {
+        const proBadge = document.createElement('span');
+        proBadge.className = 'ml-2 bg-gradient-to-r from-yellow-400 to-yellow-600 text-white text-xs font-bold px-2 py-1 rounded-full';
+        proBadge.textContent = 'PRO';
+        userMenuBtn.appendChild(proBadge);
+    }
+
+    // Enable/disable Pro features on course cards
+    updateCourseCardButtons(proData.isPro);
+}
+
+function updateCourseCardButtons(isPro) {
+    console.log('🎨 Updating course card buttons... Pro:', isPro);
+    
+    const courseCards = document.querySelectorAll('.course-card');
+    console.log('📦 Found', courseCards.length, 'course cards');
+    
+    courseCards.forEach(card => {
+        const courseId = card.getAttribute('data-course-id');
+        
+        if (!courseId) {
+            console.warn('⚠️ Course card missing data-course-id');
+            return;
+        }
+
+        // Remove existing Pro buttons to avoid duplicates
+        const existingBtns = card.querySelector('.pro-buttons-container');
+        if (existingBtns) {
+            existingBtns.remove();
+        }
+
+        // Create button container
+        const btnContainer = document.createElement('div');
+        btnContainer.className = 'pro-buttons-container mt-2 flex gap-2';
+
+        if (isPro) {
+            // ✅ Pro users get active buttons with event listeners
+            const notesBtn = document.createElement('button');
+            notesBtn.className = 'pro-feature-btn btn btn-secondary text-xs flex-1 flex items-center justify-center';
+            notesBtn.innerHTML = `
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                Notes
+            `;
+            // Add click handler
+            notesBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('📝 Notes clicked for course:', courseId);
+                viewCourseNotes(courseId);
+            });
+
+            const pdfBtn = document.createElement('button');
+            pdfBtn.className = 'pro-feature-btn btn bg-yellow-500 hover:bg-yellow-600 text-white text-xs flex-1 flex items-center justify-center';
+            pdfBtn.innerHTML = `
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                PDF
+            `;
+            // Add click handler
+            pdfBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('📄 PDF clicked for course:', courseId);
+                downloadCoursePDF(courseId);
+            });
+
+            btnContainer.appendChild(notesBtn);
+            btnContainer.appendChild(pdfBtn);
+        } else {
+            // Free users see locked buttons
+            const notesBtn = document.createElement('button');
+            notesBtn.className = 'pro-feature-btn btn btn-secondary text-xs flex-1 flex items-center justify-center opacity-75';
+            notesBtn.innerHTML = `
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                </svg>
+                Notes 🔒
+            `;
+            notesBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                showProUpgradeModal('notes');
+            });
+
+            const pdfBtn = document.createElement('button');
+            pdfBtn.className = 'pro-feature-btn btn bg-gray-400 hover:bg-gray-500 text-white text-xs flex-1 flex items-center justify-center';
+            pdfBtn.innerHTML = `
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                </svg>
+                PDF 🔒
+            `;
+            pdfBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                showProUpgradeModal('pdf');
+            });
+
+            btnContainer.appendChild(notesBtn);
+            btnContainer.appendChild(pdfBtn);
+        }
+
+        // Insert buttons before the main action button
+        const mainBtn = card.querySelector('.btn-primary');
+        if (mainBtn && mainBtn.parentElement) {
+            mainBtn.parentElement.insertBefore(btnContainer, mainBtn);
+        } else {
+            card.appendChild(btnContainer);
+        }
+    });
+    
+    console.log('✅ Course card buttons updated');
+}
+
+// View Course Notes (Pro feature)
+async function viewCourseNotes(courseId) {
+    console.log('📝 Opening notes for course:', courseId);
+    
+    const token = localStorage.getItem('sb_token') || localStorage.getItem('skillupToken');
+    
+    if (!token) {
+        alert('Please login to view course notes');
+        window.location.href = 'user_login.html';
+        return;
+    }
+
+    try {
+        showToast('Loading course notes...', 'info');
+        
+        const response = await fetch(`${API_BASE}/api/courses/${courseId}/notes`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        const data = await response.json();
+        console.log('📦 Notes response:', data);
+
+        if (!response.ok) {
+            if (response.status === 403 || data.upgradeRequired) {
+                showProUpgradeModal('notes');
+                return;
+            }
+            throw new Error(data.message || 'Failed to load notes');
+        }
+
+        if (!data.courseNote) {
+            throw new Error('No notes available for this course');
+        }
+
+        // Show notes modal
+        showNotesModal(data.courseNote);
+
+    } catch (error) {
+        console.error('❌ Error loading notes:', error);
+        showToast(error.message || 'Failed to load notes', 'error');
+    }
+}
+
+// Download Course PDF (Pro feature)
+async function downloadCoursePDF(courseId) {
+    console.log('📄 Downloading PDF for course:', courseId);
+    
+    const token = localStorage.getItem('sb_token') || localStorage.getItem('skillupToken');
+    
+    if (!token) {
+        alert('Please login to download PDFs');
+        window.location.href = 'user_login.html';
+        return;
+    }
+
+    try {
+        showToast('Generating PDF...', 'info');
+        
+        const response = await fetch(`${API_BASE}/api/courses/${courseId}/notes/pdf`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            if (response.status === 403 || data.upgradeRequired) {
+                showProUpgradeModal('pdf');
+                return;
+            }
+            throw new Error(data.message || 'Failed to generate PDF');
+        }
+
+        if (data.pdfData) {
+            generatePDF(data.pdfData);
+            showToast('✅ PDF downloaded!', 'success');
+        }
+
+    } catch (error) {
+        console.error('❌ Error downloading PDF:', error);
+        showToast(error.message || 'Failed to download PDF', 'error');
+    }
+}
+
+// Show Pro Upgrade Modal
+function showProUpgradeModal(feature) {
+    const featureNames = {
+        'notes': 'Course Notes',
+        'pdf': 'PDF Downloads'
+    };
+
+    const modal = document.createElement('div');
+    modal.className = 'fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4';
+    modal.innerHTML = `
+        <div class="bg-white rounded-2xl w-full max-w-md p-8 text-center transform transition-all">
+            <div class="w-16 h-16 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
+            </div>
+            <h3 class="text-2xl font-bold text-text-primary mb-2">Upgrade to Pro</h3>
+            <p class="text-text-secondary mb-6">
+                ${featureNames[feature]} is a Pro feature. Upgrade now to unlock:
+            </p>
+            <ul class="text-left space-y-2 mb-6">
+                <li class="flex items-center">
+                    <svg class="w-5 h-5 text-success mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>Course notes & study materials</span>
+                </li>
+                <li class="flex items-center">
+                    <svg class="w-5 h-5 text-success mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>Download PDF summaries</span>
+                </li>
+                <li class="flex items-center">
+                    <svg class="w-5 h-5 text-success mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>Unlimited bookmarks</span>
+                </li>
+                <li class="flex items-center">
+                    <svg class="w-5 h-5 text-success mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>Priority support</span>
+                </li>
+            </ul>
+            <div class="space-y-3">
+                <button onclick="window.location.href='../index.html#pricing'" class="btn btn-primary w-full">
+                    Upgrade to Pro - ₹199/month
+                </button>
+                <button onclick="this.closest('.fixed').remove()" class="text-text-secondary hover:text-primary">
+                    Maybe Later
+                </button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+}
+
+// Initialize Pro status check on page load
+document.addEventListener('DOMContentLoaded', function() {
+    checkProStatus();
+});
+</script>
+
+<!-- Add jsPDF library for PDF generation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+// PDF Generation using jsPDF
+function generatePDF(pdfData) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    let yPosition = 20;
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const margin = 20;
+    const maxWidth = pageWidth - 2 * margin;
+
+    // Title
+    doc.setFontSize(20);
+    doc.setFont(undefined, 'bold');
+    doc.text(pdfData.courseName, margin, yPosition);
+    yPosition += 15;
+
+    // Generated date
+    doc.setFontSize(10);
+    doc.setFont(undefined, 'normal');
+    doc.text(`Generated: ${new Date(pdfData.generatedAt).toLocaleDateString()}`, margin, yPosition);
+    yPosition += 15;
+
+    // Introduction
+    if (pdfData.content.introduction) {
+        doc.setFontSize(14);
+        doc.setFont(undefined, 'bold');
+        doc.text('Introduction', margin, yPosition);
+        yPosition += 7;
+        
+        doc.setFontSize(10);
+        doc.setFont(undefined, 'normal');
+        const introLines = doc.splitTextToSize(pdfData.content.introduction, maxWidth);
+        doc.text(introLines, margin, yPosition);
+        yPosition += introLines.length * 5 + 10;
+    }
+
+    // Learning Objectives
+    if (pdfData.content.learningObjectives && pdfData.content.learningObjectives.length > 0) {
+        doc.setFontSize(14);
+        doc.setFont(undefined, 'bold');
+        doc.text('Learning Objectives', margin, yPosition);
+        yPosition += 7;
+        
+        doc.setFontSize(10);
+        doc.setFont(undefined, 'normal');
+        pdfData.content.learningObjectives.forEach((obj, index) => {
+            doc.text(`${index + 1}. ${obj}`, margin + 5, yPosition);
+            yPosition += 6;
+        });
+        yPosition += 5;
+    }
+
+    // Key Topics
+    if (pdfData.content.keyTopics && pdfData.content.keyTopics.length > 0) {
+        doc.setFontSize(14);
+        doc.setFont(undefined, 'bold');
+        doc.text('Key Topics', margin, yPosition);
+        yPosition += 7;
+        
+        pdfData.content.keyTopics.forEach(topic => {
+            if (yPosition > 270) {
+                doc.addPage();
+                yPosition = 20;
+            }
+            
+            doc.setFontSize(12);
+            doc.setFont(undefined, 'bold');
+            doc.text(topic.title, margin + 5, yPosition);
+            yPosition += 6;
+            
+            doc.setFontSize(10);
+            doc.setFont(undefined, 'normal');
+            const descLines = doc.splitTextToSize(topic.description, maxWidth - 5);
+            doc.text(descLines, margin + 5, yPosition);
+            yPosition += descLines.length * 5 + 5;
+        });
+    }
+
+    // Summary
+    if (pdfData.content.summary) {
+        if (yPosition > 250) {
+            doc.addPage();
+            yPosition = 20;
+        }
+        
+        doc.setFontSize(14);
+        doc.setFont(undefined, 'bold');
+        doc.text('Summary', margin, yPosition);
+        yPosition += 7;
+        
+        doc.setFontSize(10);
+        doc.setFont(undefined, 'normal');
+        const summaryLines = doc.splitTextToSize(pdfData.content.summary, maxWidth);
+        doc.text(summaryLines, margin, yPosition);
+    }
+
+    // Save PDF
+    const fileName = `${pdfData.courseName.replace(/[^a-z0-9]/gi, '_')}_notes.pdf`;
+    doc.save(fileName);
+}
+
+// Show Notes Modal
+function showNotesModal(courseNote) {
+    console.log('🎨 Showing notes modal');
+    
+    // Remove existing modal if any
+    const existingModal = document.querySelector('.notes-modal-overlay');
+    if (existingModal) existingModal.remove();
+    
+    const modal = document.createElement('div');
+    modal.className = 'notes-modal-overlay fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto';
+    
+    modal.innerHTML = `
+        <div class="bg-white rounded-2xl w-full max-w-4xl my-8 shadow-2xl transform transition-all animate-scale-in">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-primary to-secondary p-6 text-white rounded-t-2xl">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-2xl font-bold">${escapeHtml(courseNote.courseName)}</h3>
+                        <p class="text-white/80 text-sm mt-1">📚 Course Study Notes</p>
+                    </div>
+                    <button onclick="closeNotesModal()" class="p-2 rounded-full hover:bg-white/20 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="p-6 max-h-[60vh] overflow-y-auto">
+                ${courseNote.content.introduction ? `
+                    <div class="mb-6">
+                        <h4 class="text-lg font-semibold text-text-primary mb-3 flex items-center">
+                            <svg class="w-5 h-5 mr-2 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
+                            </svg>
+                            Introduction
+                        </h4>
+                        <p class="text-text-secondary leading-relaxed">${escapeHtml(courseNote.content.introduction)}</p>
+                    </div>
+                ` : ''}
+
+                ${courseNote.content.learningObjectives && courseNote.content.learningObjectives.length > 0 ? `
+                    <div class="mb-6 bg-primary-50 p-4 rounded-lg">
+                        <h4 class="text-lg font-semibold text-text-primary mb-3">🎯 Learning Objectives</h4>
+                        <ul class="space-y-2">
+                            ${courseNote.content.learningObjectives.map(obj => `
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-success mr-2 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <span class="text-text-secondary">${escapeHtml(obj)}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                ` : ''}
+
+                ${courseNote.content.keyTopics && courseNote.content.keyTopics.length > 0 ? `
+                    <div class="mb-6">
+                        <h4 class="text-lg font-semibold text-text-primary mb-3">📚 Key Topics</h4>
+                        <div class="space-y-4">
+                            ${courseNote.content.keyTopics.map(topic => `
+                                <div class="border border-border rounded-lg p-4 hover:border-primary transition-colors">
+                                    <h5 class="font-semibold text-text-primary mb-2">${escapeHtml(topic.title)}</h5>
+                                    <p class="text-text-secondary text-sm">${escapeHtml(topic.description)}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                ` : ''}
+
+                ${courseNote.content.tips && courseNote.content.tips.length > 0 ? `
+                    <div class="mb-6 bg-yellow-50 p-4 rounded-lg">
+                        <h4 class="text-lg font-semibold text-text-primary mb-3">💡 Pro Tips</h4>
+                        <ul class="space-y-2">
+                            ${courseNote.content.tips.map(tip => `
+                                <li class="flex items-start">
+                                    <span class="text-yellow-500 mr-2">•</span>
+                                    <span class="text-text-secondary">${escapeHtml(tip)}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                ` : ''}
+            </div>
+
+            <!-- Footer -->
+            <div class="border-t border-border p-6 flex justify-between items-center bg-gray-50 rounded-b-2xl">
+                <div class="text-sm text-text-secondary">
+                    <span class="font-medium">${courseNote.viewCount || 0}</span> views • 
+                    <span class="font-medium">${courseNote.downloadCount || 0}</span> downloads
+                </div>
+                <button onclick="downloadCoursePDF('${courseNote.courseId}')" class="btn btn-primary flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Download PDF
+                </button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    document.body.style.overflow = 'hidden';
+    
+    // Close on background click
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            closeNotesModal();
+        }
+    });
+    
+    // Close on Escape key
+    const escHandler = function(e) {
+        if (e.key === 'Escape') {
+            closeNotesModal();
+            document.removeEventListener('keydown', escHandler);
+        }
+    };
+    document.addEventListener('keydown', escHandler);
+}
+
+function closeNotesModal() {
+    const modal = document.querySelector('.notes-modal-overlay');
+    if (modal) {
+        modal.remove();
+        document.body.style.overflow = '';
+    }
+}
+
+window.closeNotesModal = closeNotesModal;
+window.viewCourseNotes = viewCourseNotes;
+window.downloadCoursePDF = downloadCoursePDF;
+
+// Add animation styles
+if (!document.getElementById('notes-modal-styles')) {
+    const style = document.createElement('style');
+    style.id = 'notes-modal-styles';
+    style.textContent = `
+        @keyframes scale-in {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        .animate-scale-in {
+            animation: scale-in 0.2s ease-out;
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+console.log('✅ Notes functionality initialized');
+
+
+
+</script>
+
+<script src="../js/userDataSync.js"></script>
+<script src="../js/course-notes-modal.js"></script>
+    
+</body>
+</html>

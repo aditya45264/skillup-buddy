@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Skills Assessment Quiz - SkillUp Buddy</title>
+   
+    <link rel="stylesheet" href="../css/main.css" />
+</head>
+<body class="bg-background min-h-screen">
+    <!-- Header -->
+    <header class="bg-surface shadow-sm border-b border-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="../index.html" class="flex items-center space-x-2">
+                        <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.84L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.84l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xl font-semibold text-text-primary">SkillUp Buddy</span>
+                    </a>
+                </div>
+
+                <!-- User Menu -->
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-3">
+                        <img id="userAvatar" src="" alt="Avatar" class="w-8 h-8 rounded-full object-cover hidden" />
+                        <div id="userInitials" class="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
+                            <span class="text-primary font-medium text-sm"></span>
+                        </div>
+                        <div class="hidden sm:block">
+                            <p class="text-sm font-medium text-text-primary" id="userName">Loading...</p>
+                            <p class="text-xs text-text-secondary">Taking Quiz</p>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <button id="userMenuBtn" class="p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+                            <svg class="w-5 h-5 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                        <div id="userMenu" class="absolute right-0 mt-2 w-48 bg-surface rounded-lg shadow-lg border border-border hidden z-50">
+                            <div class="py-1">
+                                <a href="user_dashboard.html" class="block px-4 py-2 text-sm text-text-primary hover:bg-gray-50">Dashboard</a>
+                                <a href="user_profile_management.html" class="block px-4 py-2 text-sm text-text-primary hover:bg-gray-50">Profile Settings</a>
+                                <div class="border-t border-border"></div>
+                                <a href="#" id="signOutBtn" class="block px-4 py-2 text-sm text-text-primary hover:bg-gray-50">Sign Out</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Progress Bar -->
+    <div class="bg-surface border-b border-border">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex items-center justify-between mb-2">
+                <h2 class="text-lg font-semibold text-text-primary">Skills Assessment Quiz</h2>
+                <span id="progressText" class="text-sm text-text-secondary">Question 1 of 10</span>
+            </div>
+            <div class="w-full bg-border-light rounded-full h-2">
+                <div id="progressBar" class="bg-primary h-2 rounded-full transition-all duration-500 ease-out" style="width: 10%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex-1 py-8 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-2xl mx-auto">
+            <!-- Quiz Container -->
+            <div id="quizContainer" class="space-y-6">
+                <!-- Question Card -->
+                <div id="questionCard" class="card p-8 slide-in">
+                    <!-- Question Header -->
+                    <div class="mb-6">
+                        <div class="flex items-center space-x-2 mb-3">
+                            <div id="questionIcon" class="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                            <span id="questionCategory" class="text-sm font-medium text-primary bg-primary-50 px-3 py-1 rounded-full">Skill Level</span>
+                        </div>
+                        <h3 id="questionTitle" class="text-2xl font-semibold text-text-primary mb-2">What's your current experience level with programming?</h3>
+                        <p id="questionDescription" class="text-text-secondary">This helps us recommend courses that match your current skill level.</p>
+                    </div>
+
+                    <!-- Answer Options -->
+                    <div id="answerOptions" class="space-y-3">
+                        <!-- Options will be dynamically generated -->
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="flex justify-between items-center mt-8 pt-6 border-t border-border">
+                        <button id="prevBtn" class="btn bg-gray-100 text-text-primary hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed touch-target" disabled>
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                            </svg>
+                            Previous
+                        </button>
+                        
+                        <div class="flex items-center space-x-2">
+                            <button id="saveProgressBtn" class="text-text-secondary hover:text-primary transition-colors duration-200 text-sm">
+                                <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3-3m0 0l-3 3m3-3v12"/>
+                                </svg>
+                                Save Progress
+                            </button>
+                        </div>
+
+                        <button id="nextBtn" class="btn btn-primary disabled:opacity-50 disabled:cursor-not-allowed touch-target" disabled>
+                            Next
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Loading State -->
+                <div id="loadingState" class="card p-8 hidden">
+                    <div class="animate-pulse">
+                        <div class="flex items-center space-x-2 mb-4">
+                            <div class="w-8 h-8 bg-gray-200 rounded-lg"></div>
+                            <div class="h-6 bg-gray-200 rounded w-24"></div>
+                        </div>
+                        <div class="h-8 bg-gray-200 rounded w-3/4 mb-2"></div>
+                        <div class="h-4 bg-gray-200 rounded w-1/2 mb-6"></div>
+                        <div class="space-y-3">
+                            <div class="h-12 bg-gray-200 rounded"></div>
+                            <div class="h-12 bg-gray-200 rounded"></div>
+                            <div class="h-12 bg-gray-200 rounded"></div>
+                            <div class="h-12 bg-gray-200 rounded"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quiz Completion -->
+                <div id="completionCard" class="card p-8 text-center hidden">
+                    <div class="mb-6">
+                        <div class="w-16 h-16 bg-accent-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-text-primary mb-2">Quiz Completed!</h3>
+                        <p class="text-text-secondary">Great job! We're analyzing your responses to create personalized course recommendations.</p>
+                    </div>
+                    
+                    <div class="bg-accent-50 rounded-lg p-4 mb-6">
+                        <div class="flex items-center justify-center space-x-2 mb-2">
+                            <svg class="w-5 h-5 text-accent animate-spin" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                            </svg>
+                            <span class="text-accent font-medium">Generating recommendations...</span>
+                        </div>
+                        <p class="text-sm text-accent-600">This may take a few seconds</p>
+                    </div>
+
+                    <button id="viewResultsBtn" class="btn btn-primary touch-target hidden">
+                        View My Recommendations
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quiz Summary (Hidden by default) -->
+            <div id="quizSummary" class="card p-6 mt-6 bg-primary-50 border border-primary-100 hidden">
+                <h4 class="text-lg font-semibold text-primary mb-3">Your Quiz Summary</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+                    <div>
+                        <div class="text-2xl font-semibold text-primary" id="summarySkillLevel">Intermediate</div>
+                        <div class="text-sm text-text-secondary">Skill Level</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-semibold text-primary" id="summaryInterests">3</div>
+                        <div class="text-sm text-text-secondary">Interest Areas</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-semibold text-primary" id="summaryGoals">Career Growth</div>
+                        <div class="text-sm text-text-secondary">Primary Goal</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-surface border-t border-border mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="text-center text-text-secondary text-sm">
+                <p>&copy; 2025 SkillUp Buddy. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Quiz data and logic
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load user data first
+            loadUserData();
+
+            // Quiz data
+            const quizData = [
+                {
+                    id: 1,
+                    category: "Skill Level",
+                    icon: "question",
+                    title: "What's your current experience level with programming?",
+                    description: "This helps us recommend courses that match your current skill level.",
+                    type: "single",
+                    options: [
+                        { id: "beginner", text: "Complete Beginner", description: "I've never written code before" },
+                        { id: "some-basics", text: "Some Basics", description: "I know a little HTML/CSS or basic concepts" },
+                        { id: "intermediate", text: "Intermediate", description: "I can build simple applications" },
+                        { id: "advanced", text: "Advanced", description: "I'm comfortable with multiple languages and frameworks" }
+                    ]
+                },
+                {
+                    id: 2,
+                    category: "Learning Goals",
+                    icon: "target",
+                    title: "What's your primary learning goal?",
+                    description: "Understanding your motivation helps us suggest the most relevant courses.",
+                    type: "single",
+                    options: [
+                        { id: "career-change", text: "Career Change", description: "I want to transition into tech" },
+                        { id: "skill-upgrade", text: "Skill Upgrade", description: "Enhance my current technical skills" },
+                        { id: "side-project", text: "Side Projects", description: "Build personal projects and apps" },
+                        { id: "academic", text: "Academic Learning", description: "Supplement my formal education" }
+                    ]
+                },
+                {
+                    id: 3,
+                    category: "Interests",
+                    icon: "heart",
+                    title: "Which areas interest you most?",
+                    description: "Select all that apply. We'll prioritize courses in these areas.",
+                    type: "multiple",
+                    options: [
+                        { id: "web-dev", text: "Web Development", description: "Frontend and backend development" },
+                        { id: "mobile-dev", text: "Mobile Development", description: "iOS and Android apps" },
+                        { id: "data-science", text: "Data Science", description: "Analytics, ML, and AI" },
+                        { id: "design", text: "UI/UX Design", description: "User interface and experience design" },
+                        { id: "devops", text: "DevOps", description: "Deployment and infrastructure" },
+                        { id: "cybersecurity", text: "Cybersecurity", description: "Security and ethical hacking" }
+                    ]
+                },
+                {
+                    id: 4,
+                    category: "Learning Style",
+                    icon: "book",
+                    title: "How do you prefer to learn?",
+                    description: "This helps us recommend the right format of courses for you.",
+                    type: "single",
+                    options: [
+                        { id: "video", text: "Video Tutorials", description: "I learn best by watching and following along" },
+                        { id: "hands-on", text: "Hands-on Projects", description: "I prefer building things while learning" },
+                        { id: "reading", text: "Reading & Documentation", description: "I like comprehensive written materials" },
+                        { id: "interactive", text: "Interactive Coding", description: "I enjoy coding challenges and exercises" }
+                    ]
+                },
+                {
+                    id: 5,
+                    category: "Time Commitment",
+                    icon: "clock",
+                    title: "How much time can you dedicate to learning per week?",
+                    description: "We'll suggest courses that fit your schedule.",
+                    type: "single",
+                    options: [
+                        { id: "1-3-hours", text: "1-3 hours", description: "Light learning, flexible schedule" },
+                        { id: "4-7-hours", text: "4-7 hours", description: "Moderate commitment" },
+                        { id: "8-15-hours", text: "8-15 hours", description: "Serious learning goals" },
+                        { id: "15-plus", text: "15+ hours", description: "Intensive learning or career transition" }
+                    ]
+                },
+                {
+                    id: 6,
+                    category: "Budget",
+                    icon: "dollar",
+                    title: "What's your preferred course budget?",
+                    description: "We'll show both free and paid options based on your preference.",
+                    type: "single",
+                    options: [
+                        { id: "free-only", text: "Free Only", description: "I prefer completely free resources" },
+                        { id: "under-500", text: "Under ₹500", description: "Budget-friendly paid courses" },
+                        { id: "500-2000", text: "₹500 - ₹2,000", description: "Mid-range comprehensive courses" },
+                        { id: "2000-plus", text: "₹2,000+", description: "Premium courses and bootcamps" }
+                    ]
+                },
+                {
+                    id: 7,
+                    category: "Experience",
+                    icon: "briefcase",
+                    title: "Do you have any professional experience in tech?",
+                    description: "This helps us understand your background better.",
+                    type: "single",
+                    options: [
+                        { id: "no-experience", text: "No Experience", description: "I'm completely new to the tech industry" },
+                        { id: "some-exposure", text: "Some Exposure", description: "I've worked with tech teams or tools" },
+                        { id: "related-field", text: "Related Field", description: "I work in a tech-adjacent role" },
+                        { id: "tech-professional", text: "Tech Professional", description: "I already work in tech but want to expand" }
+                    ]
+                },
+                {
+                    id: 8,
+                    category: "Tools",
+                    icon: "code",
+                    title: "Which tools or technologies have you used?",
+                    description: "Select all that you have some experience with.",
+                    type: "multiple",
+                    options: [
+                        { id: "html-css", text: "HTML/CSS", description: "Basic web markup and styling" },
+                        { id: "javascript", text: "JavaScript", description: "Programming language for web" },
+                        { id: "python", text: "Python", description: "General-purpose programming language" },
+                        { id: "sql", text: "SQL", description: "Database query language" },
+                        { id: "git", text: "Git/GitHub", description: "Version control systems" },
+                        { id: "none", text: "None of these", description: "I haven't used any of these tools" }
+                    ]
+                },
+                {
+                    id: 9,
+                    category: "Certification",
+                    icon: "award",
+                    title: "Are you interested in earning certificates?",
+                    description: "Some courses offer certificates that can boost your resume.",
+                    type: "single",
+                    options: [
+                        { id: "very-important", text: "Very Important", description: "Certificates are crucial for my goals" },
+                        { id: "nice-to-have", text: "Nice to Have", description: "I'd like certificates but they're not essential" },
+                        { id: "not-important", text: "Not Important", description: "I'm focused on learning, not certificates" },
+                        { id: "unsure", text: "Not Sure", description: "I need to learn more about their value" }
+                    ]
+                },
+                {
+                    id: 10,
+                    category: "Support",
+                    icon: "users",
+                    title: "How important is community and instructor support?",
+                    description: "This helps us recommend courses with the right level of interaction.",
+                    type: "single",
+                    options: [
+                        { id: "very-important", text: "Very Important", description: "I need active support and community" },
+                        { id: "somewhat-important", text: "Somewhat Important", description: "Occasional help would be nice" },
+                        { id: "self-directed", text: "Self-Directed", description: "I prefer learning independently" },
+                        { id: "mixed", text: "Mixed Approach", description: "I like both independent and supported learning" }
+                    ]
+                }
+            ];
+
+            let currentQuestionIndex = 0;
+            let answers = {};
+            let quizStartTime = Date.now();
+
+            // Load saved progress
+            const savedProgress = localStorage.getItem('skillsQuizProgress');
+            if (savedProgress) {
+                const progress = JSON.parse(savedProgress);
+                currentQuestionIndex = progress.currentQuestion || 0;
+                answers = progress.answers || {};
+            }
+
+            // DOM elements
+            const questionCard = document.getElementById('questionCard');
+            const loadingState = document.getElementById('loadingState');
+            const completionCard = document.getElementById('completionCard');
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const saveProgressBtn = document.getElementById('saveProgressBtn');
+            const userMenuBtn = document.getElementById('userMenuBtn');
+            const userMenu = document.getElementById('userMenu');
+            const signOutBtn = document.getElementById('signOutBtn');
+
+            // Initialize quiz
+            displayQuestion(currentQuestionIndex);
+
+            // User menu toggle
+            userMenuBtn.addEventListener('click', function() {
+                userMenu.classList.toggle('hidden');
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!userMenuBtn.contains(e.target) && !userMenu.contains(e.target)) {
+                    userMenu.classList.add('hidden');
+                }
+            });
+
+            // Sign out
+            signOutBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.clear();
+                window.location.href = 'user_login.html';
+            });
+
+            // Navigation event listeners
+            prevBtn.addEventListener('click', function() {
+                if (currentQuestionIndex > 0) {
+                    currentQuestionIndex--;
+                    displayQuestion(currentQuestionIndex);
+                }
+            });
+
+            nextBtn.addEventListener('click', function() {
+                if (currentQuestionIndex < quizData.length - 1) {
+                    currentQuestionIndex++;
+                    displayQuestion(currentQuestionIndex);
+                } else {
+                    completeQuiz();
+                }
+            });
+
+            saveProgressBtn.addEventListener('click', function() {
+                saveProgress();
+                showSaveConfirmation();
+            });
+
+            function displayQuestion(index) {
+                const question = quizData[index];
+                
+                questionCard.classList.add('hidden');
+                loadingState.classList.remove('hidden');
+
+                setTimeout(() => {
+                    updateProgress(index + 1, quizData.length);
+                    document.getElementById('questionCategory').textContent = question.category;
+                    document.getElementById('questionTitle').textContent = question.title;
+                    document.getElementById('questionDescription').textContent = question.description;
+
+                    const iconElement = document.getElementById('questionIcon');
+                    iconElement.innerHTML = getIconSVG(question.icon);
+
+                    generateAnswerOptions(question);
+                    updateNavigationButtons(index);
+
+                    loadingState.classList.add('hidden');
+                    questionCard.classList.remove('hidden');
+
+                    saveProgress();
+                }, 500);
+            }
+
+            function generateAnswerOptions(question) {
+                const container = document.getElementById('answerOptions');
+                container.innerHTML = '';
+
+                question.options.forEach((option) => {
+                    const optionElement = document.createElement('div');
+                    optionElement.className = 'option-card';
+                    
+                    const inputType = question.type === 'multiple' ? 'checkbox' : 'radio';
+                    const inputName = question.type === 'multiple' ? `question_${question.id}[]` : `question_${question.id}`;
+                    
+                    const isChecked = question.type === 'multiple' 
+                        ? (answers[question.id] && answers[question.id].includes(option.id))
+                        : (answers[question.id] === option.id);
+
+                    optionElement.innerHTML = `
+                        <label class="flex items-start p-4 border border-border rounded-lg cursor-pointer hover:border-primary hover:bg-primary-50 transition-all duration-200 ${isChecked ? 'border-primary bg-primary-50' : ''}">
+                            <input type="${inputType}" name="${inputName}" value="${option.id}" class="mt-1 mr-4 text-primary focus:ring-primary" ${isChecked ? 'checked' : ''}>
+                            <div class="flex-1">
+                                <div class="font-medium text-text-primary mb-1">${option.text}</div>
+                                <div class="text-sm text-text-secondary">${option.description}</div>
+                            </div>
+                            <div class="ml-2 check-icon transition-opacity duration-200 ${isChecked ? 'opacity-100' : 'opacity-0'}">
+                                <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                        </label>
+                    `;
+
+                    container.appendChild(optionElement);
+
+                    const input = optionElement.querySelector('input');
+                    const label = optionElement.querySelector('label');
+                    const checkIcon = optionElement.querySelector('.check-icon');
+
+                    input.addEventListener('change', function() {
+                        if (question.type === 'multiple') {
+                            handleMultipleChoice(question.id, option.id, this.checked);
+                        } else {
+                            handleSingleChoice(question.id, option.id);
+                            container.querySelectorAll('label').forEach(l => {
+                                l.classList.remove('border-primary', 'bg-primary-50');
+                                const icon = l.querySelector('.check-icon');
+                                if (icon) {
+                                    icon.classList.add('opacity-0');
+                                    icon.classList.remove('opacity-100');
+                                }
+                            });
+                        }
+
+                        if (this.checked) {
+                            label.classList.add('border-primary', 'bg-primary-50');
+                            if (checkIcon) {
+                                checkIcon.classList.remove('opacity-0');
+                                checkIcon.classList.add('opacity-100');
+                            }
+                        } else {
+                            label.classList.remove('border-primary', 'bg-primary-50');
+                            if (checkIcon) {
+                                checkIcon.classList.add('opacity-0');
+                                checkIcon.classList.remove('opacity-100');
+                            }
+                        }
+
+                        updateNextButton();
+                    });
+                });
+
+                updateNextButton();
+            }
+
+            function handleSingleChoice(questionId, optionId) {
+                answers[questionId] = optionId;
+            }
+
+            function handleMultipleChoice(questionId, optionId, checked) {
+                if (!answers[questionId]) {
+                    answers[questionId] = [];
+                }
+
+                if (checked) {
+                    if (!answers[questionId].includes(optionId)) {
+                        answers[questionId].push(optionId);
+                    }
+                } else {
+                    answers[questionId] = answers[questionId].filter(id => id !== optionId);
+                }
+            }
+
+            function updateProgress(current, total) {
+                const percentage = (current / total) * 100;
+                progressBar.style.width = `${percentage}%`;
+                progressText.textContent = `Question ${current} of ${total}`;
+            }
+
+            function updateNavigationButtons(index) {
+                prevBtn.disabled = index === 0;
+                prevBtn.classList.toggle('opacity-50', index === 0);
+                
+                nextBtn.textContent = index === quizData.length - 1 ? 'Complete Quiz' : 'Next';
+                
+                updateNextButton();
+            }
+
+            function updateNextButton() {
+                const currentQuestion = quizData[currentQuestionIndex];
+                const hasAnswer = answers[currentQuestion.id] && 
+                    (Array.isArray(answers[currentQuestion.id]) ? 
+                        answers[currentQuestion.id].length > 0 : 
+                        answers[currentQuestion.id]);
+                
+                nextBtn.disabled = !hasAnswer;
+                nextBtn.classList.toggle('opacity-50', !hasAnswer);
+            }
+
+            function saveProgress() {
+                const progress = {
+                    currentQuestion: currentQuestionIndex,
+                    answers: answers,
+                    timestamp: Date.now()
+                };
+                localStorage.setItem('skillsQuizProgress', JSON.stringify(progress));
+            }
+
+            function showSaveConfirmation() {
+                const originalText = saveProgressBtn.innerHTML;
+                saveProgressBtn.innerHTML = `
+                    <svg class="w-4 h-4 inline mr-1 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                    Saved!
+                `;
+                saveProgressBtn.classList.add('text-accent');
+
+                setTimeout(() => {
+                    saveProgressBtn.innerHTML = originalText;
+                    saveProgressBtn.classList.remove('text-accent');
+                }, 2000);
+            }
+
+function completeQuiz() {
+    questionCard.classList.add('hidden');
+    completionCard.classList.remove('hidden');
+    updateProgress(quizData.length, quizData.length);
+
+    generateQuizSummary();
+
+    const quizResults = {
+        answers: answers,
+        completedAt: Date.now(),
+        duration: Date.now() - quizStartTime,
+        summary: generateSummaryData()
+    };
+    
+    localStorage.setItem('skillsQuizResults', JSON.stringify(quizResults));
+    localStorage.removeItem('skillsQuizProgress');
+    
+    if (window.UserDataSync) {
+        const syncStatus = document.createElement('p');
+        syncStatus.id = 'syncStatus';
+        syncStatus.className = 'text-sm text-primary mt-4';
+        syncStatus.textContent = 'Syncing your results...';
+        completionCard.querySelector('.bg-accent-50').appendChild(syncStatus);
+
+        let retryCount = 0;
+        const maxRetries = 3;
+
+        const attemptSync = async () => {
+            try {
+                const result = await UserDataSync.saveQuizResults(quizResults);
+                
+                if (result.success) {
+                    syncStatus.textContent = '✓ Results synced successfully!';
+                    syncStatus.className = 'text-sm text-success mt-4';
+                    setTimeout(() => {
+                        document.getElementById('viewResultsBtn').classList.remove('hidden');
+                        document.getElementById('quizSummary').classList.remove('hidden');
+                    }, 1500);
+                } else {
+                    throw new Error(result.message || 'Sync failed');
+                }
+            } catch (err) {
+                retryCount++;
+                if (retryCount < maxRetries) {
+                    syncStatus.textContent = `Retrying... (${retryCount}/${maxRetries})`;
+                    await new Promise(resolve => setTimeout(resolve, 1000 * retryCount));
+                    return attemptSync();
+                } else {
+                    syncStatus.textContent = '⚠ Saved locally. Will sync when online.';
+                    syncStatus.className = 'text-sm text-warning mt-4';
+                    setTimeout(() => {
+                        document.getElementById('viewResultsBtn').classList.remove('hidden');
+                        document.getElementById('quizSummary').classList.remove('hidden');
+                    }, 2000);
+                }
+            }
+        };
+
+        attemptSync();
+    } else {
+        setTimeout(() => {
+            document.getElementById('viewResultsBtn').classList.remove('hidden');
+            document.getElementById('quizSummary').classList.remove('hidden');
+        }, 2000);
+    }
+
+    document.getElementById('viewResultsBtn').addEventListener('click', function() {
+        window.location.href = 'course_recommendations_dashboard.html';
+    });
+}
+
+// Enhanced generateSummaryData with validation
+function generateSummaryData() {
+    const skillLevel = answers[1] || "beginner";
+    const interestsIds = answers[3] || [];
+    const primaryGoal = answers[2] || "skill-upgrade";
+
+    const interestLabelMap = {
+        "web-dev": "Web Development",
+        "mobile-dev": "Mobile Development",
+        "data-science": "Data Science",
+        "design": "UI/UX Design",
+        "devops": "DevOps",
+        "cybersecurity": "Cybersecurity"
+    };
+
+    const interestsLabels = Array.isArray(interestsIds)
+        ? interestsIds.map(id => interestLabelMap[id]).filter(Boolean)
+        : [];
+
+    // Ensure we have at least one interest
+    if (interestsLabels.length === 0) {
+        interestsLabels.push("Programming");
+    }
+
+    return {
+        skillLevel: skillLevel.replace("-", " ").replace(/\b\w/g, l => l.toUpperCase()),
+        interestCount: interestsLabels.length,
+        primaryGoal: primaryGoal.replace("-", " ").replace(/\b\w/g, l => l.toUpperCase()),
+        interests: interestsLabels
+    };
+}
+
+// Enhanced generateQuizSummary with better error handling
+function generateQuizSummary() {
+    try {
+        const summary = generateSummaryData();
+        
+        const skillLevelEl = document.getElementById('summarySkillLevel');
+        const interestsEl = document.getElementById('summaryInterests');
+        const goalsEl = document.getElementById('summaryGoals');
+        
+        if (skillLevelEl) skillLevelEl.textContent = summary.skillLevel;
+        if (interestsEl) interestsEl.textContent = summary.interestCount;
+        if (goalsEl) goalsEl.textContent = summary.primaryGoal;
+    } catch (error) {
+        console.error('Error generating quiz summary:', error);
+    }
+}
+
+            function getIconSVG(iconType) {
+                const icons = {
+                    question: `<svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/></svg>`,
+                    target: `<svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.293l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd"/></svg>`,
+                    heart: `<svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/></svg>`,
+                    book: `<svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20"><path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/></svg>`,
+                    clock: `<svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/></svg>`,
+                    dollar: `<svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20"><path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z"/><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd"/></svg>`,
+                    briefcase: `<svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2h2zm4-1a1 1 0 00-1 1v1h2V6a1 1 0 00-1-1zM8 8a1 1 0 012 0v1h4V8a1 1 0 112 0v1h2v6H4V9h2V8z" clip-rule="evenodd"/></svg>`,
+                    code: `<svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>`,
+                    award: `<svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>`,
+                    users: `<svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/></svg>`
+                };
+                return icons[iconType] || icons.question;
+            }
+        });
+
+        function loadUserData() {
+            const user = JSON.parse(localStorage.getItem('sb_user') || localStorage.getItem('skillupUser') || '{}');
+            
+            if (user.firstName) {
+                const fullName = `${user.firstName} ${user.lastName || ''}`.trim();
+                document.getElementById('userName').textContent = fullName;
+                
+                const initials = user.firstName.charAt(0) + (user.lastName ? user.lastName.charAt(0) : '');
+                const initialsEl = document.getElementById('userInitials').querySelector('span');
+                if (initialsEl) {
+                    initialsEl.textContent = initials.toUpperCase();
+                }
+                
+                if (user.profilePhoto) {
+                    document.getElementById('userAvatar').src = user.profilePhoto;
+                    document.getElementById('userAvatar').classList.remove('hidden');
+                    document.getElementById('userInitials').classList.add('hidden');
+                }
+            }
+        }
+    </script>
+    <script src="../js/userDataSync.js"></script>
+</body>
+</html>

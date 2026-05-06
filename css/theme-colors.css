@@ -1,0 +1,336 @@
+/* theme-dark-colors.css - Modern Dark Theme for SkillUp Buddy */
+
+:root {
+  /* Dark Background Colors */
+  --bg-darkest: #0a0e27;
+  --bg-darker: #0f1419;
+  --bg-dark: #161b22;
+  --bg-dark-elevated: #1c2128;
+  --bg-dark-card: #21262d;
+  --bg-dark-hover: #30363d;
+  --bg-overlay: rgba(0, 0, 0, 0.8);
+
+  /* Primary Colors - Electric Blue/Purple */
+  --color-primary: #6366f1;
+  --color-primary-50: #2d3250;
+  --color-primary-100: #3d4265;
+  --color-primary-200: #4e5580;
+  --color-primary-300: #5a5fc7;
+  --color-primary-400: #6366f1;
+  --color-primary-500: #818cf8;
+  --color-primary-600: #a5b4fc;
+  --color-primary-700: #c7d2fe;
+  --color-primary-800: #e0e7ff;
+  --color-primary-900: #eef2ff;
+
+  /* Secondary Colors - Vibrant Cyan/Teal */
+  --color-secondary: #06b6d4;
+  --color-secondary-50: #083344;
+  --color-secondary-100: #0e4c63;
+  --color-secondary-200: #155e75;
+  --color-secondary-300: #0891b2;
+  --color-secondary-400: #06b6d4;
+  --color-secondary-500: #22d3ee;
+  --color-secondary-600: #67e8f9;
+  --color-secondary-700: #a5f3fc;
+  --color-secondary-800: #cffafe;
+  --color-secondary-900: #ecfeff;
+
+  /* Accent Colors - Hot Pink/Magenta */
+  --color-accent: #ec4899;
+  --color-accent-50: #4c1d3e;
+  --color-accent-100: #6b2854;
+  --color-accent-200: #9d174d;
+  --color-accent-300: #db2777;
+  --color-accent-400: #ec4899;
+  --color-accent-500: #f472b6;
+  --color-accent-600: #f9a8d4;
+  --color-accent-700: #fbcfe8;
+  --color-accent-800: #fce7f3;
+  --color-accent-900: #fdf2f8;
+
+  /* Success Color - Neon Green */
+  --color-success: #10b981;
+  --color-success-light: #1e3a2e;
+  --color-success-dark: #6ee7b7;
+  --color-success-glow: rgba(16, 185, 129, 0.3);
+
+  /* Warning Color - Bright Orange */
+  --color-warning: #f59e0b;
+  --color-warning-light: #3d2f1e;
+  --color-warning-dark: #fbbf24;
+  --color-warning-glow: rgba(245, 158, 11, 0.3);
+
+  /* Error Color - Bright Red */
+  --color-error: #ef4444;
+  --color-error-light: #3e1f1f;
+  --color-error-dark: #fca5a5;
+  --color-error-glow: rgba(239, 68, 68, 0.3);
+
+  /* Text Colors - High Contrast */
+  --text-primary: #f0f6fc;
+  --text-secondary: #adbac7;
+  --text-tertiary: #768390;
+  --text-quaternary: #545d68;
+  --text-inverse: #0a0e27;
+
+  /* Border Colors */
+  --border-dark: #30363d;
+  --border-medium: #444c56;
+  --border-light: #545d68;
+  --border-glow: rgba(99, 102, 241, 0.5);
+
+  /* Gradient Definitions - Neon & Vibrant */
+  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-secondary: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+  --gradient-accent: linear-gradient(135deg, #ec4899 0%, #f97316 100%);
+  --gradient-success: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+  --gradient-purple-pink: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+  --gradient-blue-cyan: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+  --gradient-dark: linear-gradient(135deg, #0f1419 0%, #0a0e27 100%);
+  --gradient-neon: linear-gradient(135deg, #667eea 0%, #06b6d4 50%, #ec4899 100%);
+  --gradient-fire: linear-gradient(135deg, #f97316 0%, #ec4899 50%, #8b5cf6 100%);
+
+  /* Glow Effects */
+  --glow-primary: 0 0 20px rgba(99, 102, 241, 0.5);
+  --glow-secondary: 0 0 20px rgba(6, 182, 212, 0.5);
+  --glow-accent: 0 0 20px rgba(236, 72, 153, 0.5);
+  --glow-success: 0 0 20px rgba(16, 185, 129, 0.5);
+
+  /* Shadows - Dark Mode */
+  --shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 8px -1px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 10px 20px -3px rgba(0, 0, 0, 0.7);
+  --shadow-xl: 0 20px 30px -5px rgba(0, 0, 0, 0.8);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.9);
+  --shadow-colored: 0 10px 30px -5px rgba(99, 102, 241, 0.5);
+  --shadow-neon: 0 0 40px rgba(99, 102, 241, 0.4);
+
+  /* Border Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-full: 9999px;
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  /* Animation Durations */
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+
+  /* Z-index Layers */
+  --z-dropdown: 1000;
+  --z-modal: 9999;
+  --z-tooltip: 10000;
+  --z-notification: 11000;
+}
+
+/* Global Dark Theme Styles */
+body {
+  background: var(--bg-darkest);
+  color: var(--text-primary);
+}
+
+/* Dark Mode Utility Classes */
+.bg-dark-card {
+  background: var(--bg-dark-card);
+}
+
+.bg-dark-elevated {
+  background: var(--bg-dark-elevated);
+}
+
+.bg-dark-hover {
+  background: var(--bg-dark-hover);
+}
+
+.gradient-primary {
+  background: var(--gradient-primary);
+}
+
+.gradient-secondary {
+  background: var(--gradient-secondary);
+}
+
+.gradient-accent {
+  background: var(--gradient-accent);
+}
+
+.gradient-neon {
+  background: var(--gradient-neon);
+}
+
+.gradient-fire {
+  background: var(--gradient-fire);
+}
+
+.text-gradient {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-neon {
+  background: var(--gradient-neon);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glow Effects */
+.glow-primary {
+  box-shadow: var(--glow-primary);
+}
+
+.glow-secondary {
+  box-shadow: var(--glow-secondary);
+}
+
+.glow-accent {
+  box-shadow: var(--glow-accent);
+}
+
+.shadow-neon {
+  box-shadow: var(--shadow-neon);
+}
+
+/* Glass Effect for Dark Mode */
+.glass-dark {
+  background: rgba(33, 38, 45, 0.6);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-dark);
+}
+
+/* Neon Border */
+.border-neon {
+  border: 2px solid var(--color-primary-500);
+  box-shadow: 0 0 10px var(--color-primary-500);
+}
+
+/* Selection Color */
+::selection {
+  background: var(--color-primary-500);
+  color: var(--bg-darkest);
+}
+
+/* Custom Scrollbar - Dark Mode */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gradient-primary);
+  border-radius: var(--radius-full);
+  border: 2px solid var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gradient-neon);
+  box-shadow: var(--glow-primary);
+}
+
+/* Smooth Transitions */
+* {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Neon Glow Animation */
+@keyframes neonGlow {
+  0%, 100% {
+    box-shadow: 0 0 5px var(--color-primary-500),
+                0 0 10px var(--color-primary-500),
+                0 0 20px var(--color-primary-500);
+  }
+  50% {
+    box-shadow: 0 0 10px var(--color-primary-500),
+                0 0 20px var(--color-primary-500),
+                0 0 40px var(--color-primary-500);
+  }
+}
+
+.animate-neon-glow {
+  animation: neonGlow 2s ease-in-out infinite;
+}
+
+/* Pulse Glow Animation */
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+  }
+  50% {
+    opacity: 0.8;
+    box-shadow: 0 0 40px rgba(99, 102, 241, 0.8);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+/* Cyberpunk Grid Background (Optional) */
+.cyberpunk-grid {
+  background-image: 
+    linear-gradient(var(--border-dark) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border-dark) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* Neon Text Effect */
+.text-neon {
+  color: var(--color-primary-500);
+  text-shadow: 
+    0 0 5px var(--color-primary-500),
+    0 0 10px var(--color-primary-500),
+    0 0 20px var(--color-primary-500);
+}
+
+/* Card with Border Glow */
+.card-glow {
+  border: 1px solid var(--color-primary-400);
+  box-shadow: 
+    0 0 10px rgba(99, 102, 241, 0.3),
+    inset 0 0 10px rgba(99, 102, 241, 0.1);
+}
+
+/* Hover Lift Effect */
+.hover-lift {
+  transition: all 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-8px);
+  box-shadow: 
+    0 20px 40px -10px rgba(0, 0, 0, 0.8),
+    0 0 30px rgba(99, 102, 241, 0.4);
+}
+
+/* Input Focus Glow */
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-primary-500);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2),
+              0 0 20px rgba(99, 102, 241, 0.3);
+}
